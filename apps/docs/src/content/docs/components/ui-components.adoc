@@ -1,0 +1,92 @@
+= UI Components & Layout
+:description: Learn how Olympia structures its responsive three-column layout, sidebar navigation ordering, interactive custom elements, and raw HTML passthrough blocks.
+:category: Components & Layout
+:order: 1
+:badge: UI
+:badge-variant: primary
+
+Olympia provides a complete set of layout and UI components powered by standard Custom Elements with zero external client-side framework dependencies.
+
+== Responsive Three-Column Layout (`DocsLayout.astro`)
+
+`DocsLayout.astro` serves as the primary page shell and automatically adapts across three viewport breakpoints:
+
+[cols="1,1,3",options="header"]
+|===
+| Breakpoint | Column Structure | Behavior
+
+| **Desktop (`>= 1280px`)**
+| Left Sidebar (`248px`) + Center Content + Right TOC (`240px`)
+| Left and right rails are pinned to the viewport edges with independent scrolling. The right table of contents highlights the active section as you scroll.
+
+| **Tablet (`768px – 1279px`)**
+| Left Sidebar (`248px`) + Center Content
+| The right table of contents folds into a compact "On this page" dropdown menu at the top of the article to maximize horizontal reading space.
+
+| **Mobile (`< 768px`)**
+| Single-Column Fluid Layout
+| The sidebar collapses into a swipe-enabled modal navigation drawer triggered from the top-left menu button.
+|===
+
+== Sidebar Grouping & Ordering (`buildDocsNavigation`)
+
+The sidebar tree and previous/next pagination links are generated automatically via `buildDocsNavigation(entries, categoryOrder)` from `@olympia/theme`:
+
+1. **Category Order**: Groups are ordered according to the `categoryOrder` array passed to `buildDocsNavigation`. Any uncategorized or additional groups are appended alphabetically.
+2. **Item Order**: Within each category, documents are sorted in ascending order by their `:order:` attribute, breaking ties alphabetically by title.
+
+[source,typescript,filename="Customizing Category Order"]
+----
+import { getCollection } from 'astro:content';
+import { buildDocsNavigation } from '@olympia/theme';
+
+const entries = await getCollection('docs');
+const { navGroups, flatItems } = buildDocsNavigation(entries, [
+  'Getting Started',
+  'Authoring & AsciiDoc',
+  'Components & Layout',
+  'API Reference',
+]);
+----
+
+== Built-In Interactive Components
+
+Olympia ships with the following components for use in `.astro` templates or `.adoc` content:
+
+`Header.astro` / `<o-theme-toggle>`:: Sticky top navigation bar containing the brand identity, version badge, search trigger, and a color-scheme toggle synchronized with system preferences and `localStorage`.
+`SearchModal.astro` / `<o-search-modal>`:: Command palette dialog triggered via kbd:[Cmd+K] or the header search bar. Loads the Pagefind index in production builds and supports keyboard navigation (kbd:[↑], kbd:[↓], kbd:[Enter], kbd:[Esc]).
+`TableOfContents.astro` / `<o-toc>`:: Renders `h2`–`h4` document headings and tracks the active section in real time using `IntersectionObserver`.
+`Callout.astro` / `<o-callout>`:: Semantic admonition containers supporting `note`, `tip`, `important`, `warning`, and `caution` variants.
+`Tabs.astro` / `<o-tabs>`:: Accessible multi-tab container with `ArrowLeft` and `ArrowRight` keyboard switching.
+`<o-copy-btn>`:: Embedded inside every code block header to copy source code to the clipboard with visual confirmation.
+
+== Embedding Custom HTML in AsciiDoc
+
+When you need to embed custom HTML markup or interactive elements directly inside an `.adoc` file, wrap the markup in an AsciiDoc passthrough block (`++++`):
+
+[source,asciidoc]
+----
+++++
+<o-callout class="o-callout o-callout--tip" data-variant="tip">
+  <div class="o-callout__header">
+    <span class="o-callout__title">CUSTOM HTML PASSTHROUGH</span>
+  </div>
+  <div class="o-callout__body">
+    Custom HTML markup rendered directly inside an AsciiDoc document.
+  </div>
+</o-callout>
+++++
+----
+
+Rendered output:
+
+++++
+<o-callout class="o-callout o-callout--tip" data-variant="tip">
+  <div class="o-callout__header">
+    <span class="o-callout__title">CUSTOM HTML PASSTHROUGH</span>
+  </div>
+  <div class="o-callout__body">
+    Custom HTML markup rendered directly inside an AsciiDoc document.
+  </div>
+</o-callout>
+++++

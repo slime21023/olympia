@@ -1,0 +1,21 @@
+---
+import { getCalloutIcon, type CalloutVariant } from '../icons.ts';
+
+export interface Props {
+  variant?: CalloutVariant;
+  title?: string;
+}
+
+const { variant = 'note', title } = Astro.props;
+const displayTitle = title || variant.toUpperCase();
+---
+
+<o-callout class={`o-callout o-callout--${variant}`} data-variant={variant} role="note">
+  <div class="o-callout__header">
+    <span class="o-callout__icon" set:html={getCalloutIcon(variant)} />
+    <span class="o-callout__title">{displayTitle}</span>
+  </div>
+  <div class="o-callout__body">
+    <slot />
+  </div>
+</o-callout>

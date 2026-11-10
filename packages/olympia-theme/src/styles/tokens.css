@@ -1,0 +1,209 @@
+/* ==========================================================================
+   Olympia Design System — "Technical Precision" (DESIGN.md)
+   Modern Utilitarianism + Engineered Minimalism
+   ========================================================================== */
+
+:root {
+  /* Native UI color-scheme synchronization per modern-web-guidance (dark-mode & dark-mode-toggle) */
+  color-scheme: light dark;
+
+  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+  }
+  &:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+  }
+
+  /* Raw Palette — Dark (Default high-density reading mode) */
+  --raw-canvas-dark: #09090b;
+  --raw-surface-dark: #131315;
+  --raw-surface-raised-dark: #121215;
+  --raw-surface-overlay-dark: #18181b;
+  --raw-surface-high-dark: #201f22;
+  --raw-surface-highest-dark: #2a2a2c;
+  --raw-code-bg-dark: #0f0f12;
+  --raw-border-dark: #27272a;
+  --raw-border-subtle-dark: rgba(255, 255, 255, 0.08);
+  --raw-text-primary-dark: #e5e1e4;
+  --raw-text-secondary-dark: #c7c4d7;
+  --raw-text-muted-dark: #908fa0;
+
+  /* Raw Palette — Light */
+  --raw-canvas-light: #fafafa;
+  --raw-surface-light: #ffffff;
+  --raw-surface-raised-light: #f4f4f5;
+  --raw-surface-overlay-light: #ffffff;
+  --raw-surface-high-light: #f4f4f5;
+  --raw-surface-highest-light: #e4e4e7;
+  --raw-code-bg-light: #f4f4f6;
+  --raw-border-light: #e4e4e7;
+  --raw-border-subtle-light: rgba(0, 0, 0, 0.08);
+  --raw-text-primary-light: #18181b;
+  --raw-text-secondary-light: #3f3f46;
+  --raw-text-muted-light: #71717a;
+
+  /* Brand & Semantic Accents */
+  --raw-primary-dark: #8083ff;
+  --raw-primary-light: #4f46e5;
+  --raw-primary-tint-dark: #c0c1ff;
+  --raw-primary-tint-light: #4338ca;
+
+  --raw-secondary-dark: #4edea3;
+  --raw-secondary-light: #059669;
+
+  --raw-tertiary-dark: #ffb95f;
+  --raw-tertiary-light: #d97706;
+
+  --raw-error-dark: #ffb4ab;
+  --raw-error-light: #dc2626;
+
+  /* Fallback assignments (defaulting to Dark per DESIGN.md) */
+  --o-canvas: var(--raw-canvas-dark);
+  --o-surface: var(--raw-surface-dark);
+  --o-surface-raised: var(--raw-surface-raised-dark);
+  --o-surface-overlay: var(--raw-surface-overlay-dark);
+  --o-surface-high: var(--raw-surface-high-dark);
+  --o-surface-highest: var(--raw-surface-highest-dark);
+  --o-code-bg: var(--raw-code-bg-dark);
+  --o-border: var(--raw-border-dark);
+  --o-border-subtle: var(--raw-border-subtle-dark);
+  --o-text: var(--raw-text-primary-dark);
+  --o-text-secondary: var(--raw-text-secondary-dark);
+  --o-text-muted: var(--raw-text-muted-dark);
+  --o-primary: #6366f1;
+  --o-primary-hover: #4f46e5;
+  --o-primary-text: var(--raw-primary-tint-dark);
+  --o-secondary: #10b981;
+  --o-tertiary: #f59e0b;
+  --o-coral: #ffb4ab; /* fixed error/delete tint base (DESIGN.md error) */
+  --o-error: var(--raw-error-dark);
+  --o-header-bg: rgba(9, 9, 11, 0.85);
+
+  @media (prefers-color-scheme: light) {
+    --o-canvas: var(--raw-canvas-light);
+    --o-surface: var(--raw-surface-light);
+    --o-surface-raised: var(--raw-surface-raised-light);
+    --o-surface-overlay: var(--raw-surface-overlay-light);
+    --o-surface-high: var(--raw-surface-high-light);
+    --o-surface-highest: var(--raw-surface-highest-light);
+    --o-code-bg: var(--raw-code-bg-light);
+    --o-border: var(--raw-border-light);
+    --o-border-subtle: var(--raw-border-subtle-light);
+    --o-text: var(--raw-text-primary-light);
+    --o-text-secondary: var(--raw-text-secondary-light);
+    --o-text-muted: var(--raw-text-muted-light);
+    --o-primary-text: var(--raw-primary-tint-light);
+    --o-error: var(--raw-error-light);
+    --o-header-bg: rgba(250, 250, 250, 0.85);
+  }
+
+  /* Modern CSS light-dark() automatic resolution */
+  @supports (color: light-dark(white, black)) {
+    --o-canvas: light-dark(var(--raw-canvas-light), var(--raw-canvas-dark));
+    --o-surface: light-dark(var(--raw-surface-light), var(--raw-surface-dark));
+    --o-surface-raised: light-dark(var(--raw-surface-raised-light), var(--raw-surface-raised-dark));
+    --o-surface-overlay: light-dark(var(--raw-surface-overlay-light), var(--raw-surface-overlay-dark));
+    --o-surface-high: light-dark(var(--raw-surface-high-light), var(--raw-surface-high-dark));
+    --o-surface-highest: light-dark(var(--raw-surface-highest-light), var(--raw-surface-highest-dark));
+    --o-code-bg: light-dark(var(--raw-code-bg-light), var(--raw-code-bg-dark));
+    --o-border: light-dark(var(--raw-border-light), var(--raw-border-dark));
+    --o-border-subtle: light-dark(var(--raw-border-subtle-light), var(--raw-border-subtle-dark));
+    --o-text: light-dark(var(--raw-text-primary-light), var(--raw-text-primary-dark));
+    --o-text-secondary: light-dark(var(--raw-text-secondary-light), var(--raw-text-secondary-dark));
+    --o-text-muted: light-dark(var(--raw-text-muted-light), var(--raw-text-muted-dark));
+    --o-primary-text: light-dark(var(--raw-primary-tint-light), var(--raw-primary-tint-dark));
+    --o-error: light-dark(var(--raw-error-light), var(--raw-error-dark));
+    --o-header-bg: light-dark(rgba(250, 250, 250, 0.85), rgba(9, 9, 11, 0.85));
+  }
+
+  /* Typography Stack */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Shapes & Radii (DESIGN.md) */
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-DEFAULT: 0.5rem; /* 8px - Base tactile signature */
+  --radius-md: 0.75rem;   /* 12px - Floating modals & command bars */
+  --radius-lg: 1rem;      /* 16px */
+  --radius-full: 9999px;
+
+  /* Layout Dimensions */
+  --header-height: 3.5rem; /* 56px */
+  --sidebar-width: 248px;
+  --toc-width: 240px;
+  --prose-max-width: 1120px;
+
+  /* Browser UI Customization */
+  accent-color: var(--o-primary);
+  --scrollbar-track: light-dark(#f4f4f5, #121215);
+  --scrollbar-thumb: light-dark(#a1a1aa, #3f3f46);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+/* Shiki Dual Theme Synchronization */
+.shiki,
+.shiki span {
+  color: light-dark(var(--shiki-light), var(--shiki-dark));
+  background-color: transparent !important;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--o-canvas);
+  color: var(--o-text);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: calc(var(--header-height) + 1.5rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background-color: var(--o-canvas);
+  color: var(--o-text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--o-primary);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

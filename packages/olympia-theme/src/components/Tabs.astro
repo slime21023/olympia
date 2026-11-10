@@ -1,0 +1,26 @@
+---
+export interface Props {
+  labels: string[];
+}
+
+const { labels = [] } = Astro.props;
+---
+
+<o-tabs class="o-tabs">
+  <div class="o-tabs__list" role="tablist">
+    {labels.map((label, idx) => (
+      <button
+        type="button"
+        role="tab"
+        class="o-tabs__tab"
+        aria-selected={idx === 0 ? 'true' : 'false'}
+        data-tab-index={idx}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+  <div class="o-tabs__panels">
+    <slot />
+  </div>
+</o-tabs>

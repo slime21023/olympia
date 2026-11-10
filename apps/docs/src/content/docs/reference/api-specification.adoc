@@ -1,0 +1,102 @@
+= Document Compilation Endpoint
+:description: Example API reference page demonstrating HTTP method badges, request header tables, body schema definitions, and tabbed response payloads.
+:category: API Reference
+:order: 1
+:http-method: POST
+:endpoint: /v1/documents/compile
+:badge: STABLE
+:badge-variant: secondary
+
+Setting `:http-method: POST` and `:endpoint: /v1/documents/compile` in the AsciiDoc header automatically renders the HTTP method badge in the sidebar tree and displays the endpoint signature pill above the page title.
+
+== Request Headers
+
+[cols="2,1,4",options="header"]
+|===
+| Header | Required | Description
+
+| `Authorization`
+| Yes
+| Bearer token in the format `Bearer <API_KEY>` with document compilation permissions.
+
+| `Content-Type`
+| Yes
+| Must be set to `application/json; charset=utf-8`.
+
+| `X-Highlight-Theme`
+| No
+| Optional syntax highlighting theme pair. Defaults to `github-dual`.
+|===
+
+== Request Body Schema
+
+[cols="2,1,1,4",options="header"]
+|===
+| Field | Type | Default | Description
+
+| `source`
+| `string`
+| —
+| **Required**. Raw AsciiDoc (`.adoc`) document string to compile.
+
+| `safeMode`
+| `string`
+| `"safe"`
+| Asciidoctor safe mode level: `"unsafe"` \| `"safe"` \| `"server"` \| `"secure"`.
+
+| `extractToc`
+| `boolean`
+| `true`
+| Whether to extract `h2`–`h4` section headings and return the structured `headings` array.
+|===
+
+[WARNING]
+.Payload Size Limit
+====
+Synchronous compilation requests are limited to a maximum `source` payload size of **2.5 MB**. For bulk documentation indexing, use the asynchronous `/v1/documents/batch` endpoint.
+====
+
+== Request & Response Examples
+
+[tabs]
+--
+.POST Request (cURL)
+[source,bash,method="POST",endpoint="/v1/documents/compile"]
+----
+curl -X POST "https://api.example.com/v1/documents/compile" \
+  -H "Authorization: Bearer oly_live_98a7bc65" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source": "= System Status\n:category: Guide\n\n[TIP]\n====\nAll systems operational.\n====",
+    "extractToc": true
+  }'
+----
+
+.200 OK (JSON)
+[source,json,filename="200 OK — application/json"]
+----
+{
+  "status": 200,
+  "durationMs": 4.2,
+  "meta": {
+    "title": "System Status",
+    "category": "Guide",
+    "order": 99
+  },
+  "headings": [],
+  "html": "<o-callout class=\"o-callout o-callout--tip\" data-variant=\"tip\">...</o-callout>"
+}
+----
+
+.429 Too Many Requests (JSON)
+[source,json,filename="429 Too Many Requests"]
+----
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Too many compile requests from this workspace.",
+    "retryAfterSeconds": 15
+  }
+}
+----
+--

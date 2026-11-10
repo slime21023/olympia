@@ -1,0 +1,24 @@
+{
+  "name": "olympia",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Olympia — Astro + AsciiDoc Technical Documentation Theme",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bun --cwd apps/docs dev",
+    "build": "bun --cwd apps/docs build",
+    "preview": "bun --cwd apps/docs preview",
+    "test": "bun test packages/olympia-theme/tests",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "typecheck": "tsc -p packages/olympia-theme"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxlint": "^1.93.0",
+    "typescript": "^5.8.2"
+  }
+}

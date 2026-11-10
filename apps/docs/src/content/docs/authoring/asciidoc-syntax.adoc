@@ -1,0 +1,167 @@
+= AsciiDoc Syntax & Formatting
+:description: Complete reference for supported AsciiDoc document attributes, section headings, callout admonitions, code blocks, tabs, tables, and keyboard macros.
+:category: Authoring & AsciiDoc
+:order: 1
+:badge: SYNTAX
+:badge-variant: secondary
+
+Olympia includes a custom HTML5 converter that compiles standard AsciiDoc (`.adoc`) markup into structured documentation elements. This guide covers all supported syntax patterns and attributes.
+
+== Document Header Attributes
+
+Define the document title (`= Title`) and metadata attributes at the top of each `.adoc` file to control sidebar grouping, ordering, and header badges:
+
+[source,asciidoc,filename="Document Header Example"]
+----
+= Connection Pool Configuration
+:description: Configure connection limits, idle timeouts, and retry policies
+:category: Authoring & AsciiDoc
+:order: 2
+:badge: STABLE
+:badge-variant: secondary
+:http-method: POST
+:endpoint: /v1/pools/configure
+----
+
+[cols="1,1,3",options="header"]
+|===
+| Attribute | Default | Description
+
+| `:description:`
+| `""`
+| Lead summary rendered beneath the page title and used for SEO and search result excerpts.
+
+| `:category:`
+| `"Documentation"`
+| Sidebar navigation group under which the document is listed.
+
+| `:order:`
+| `99`
+| Sort priority within the sidebar category (lower numbers appear first).
+
+| `:badge:`
+| None
+| Status pill displayed in the sidebar and page header (e.g., `NEW`, `BETA`, `CORE`).
+
+| `:badge-variant:`
+| `"primary"`
+| Badge color accent: `primary` (Indigo), `secondary` (Emerald), or `tertiary` (Amber).
+
+| `:http-method:`
+| None
+| HTTP verb (`GET`, `POST`, `PUT`, `DELETE`) displayed as a semantic badge in the sidebar and header.
+
+| `:endpoint:`
+| None
+| API route path displayed next to `:http-method:` (e.g., `/v1/users`).
+|===
+
+== Callout Admonitions
+
+Olympia supports all five standard AsciiDoc admonition types (`NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`). Add an optional `.Title` line to customize the callout heading:
+
+[NOTE]
+.Contextual Note (NOTE)
+====
+Use notes to provide background context, default behavior explanations, or links to related guides.
+====
+
+[TIP]
+.Best Practice (TIP)
+====
+Use tips to highlight performance optimizations, keyboard shortcuts, or recommended implementation patterns.
+====
+
+[WARNING]
+.Operational Warning (WARNING / IMPORTANT)
+====
+Use warnings to call attention to rate limits, breaking changes, or deprecated parameters.
+====
+
+[CAUTION]
+.Destructive Action (CAUTION)
+====
+Use cautions to warn readers about irreversible data deletion, key revocation, or security risks.
+====
+
+Here is the AsciiDoc markup used to create a callout:
+
+[source,asciidoc]
+----
+[TIP]
+.Best Practice (TIP)
+====
+Use tips to highlight performance optimizations or recommended patterns.
+====
+----
+
+== Code Blocks & Headers
+
+Use `[source,<lang>]` to render syntax-highlighted code blocks. You can attach additional metadata attributes to display filenames or HTTP signatures in the header bar:
+
+* **Filename label**: Add `.filename` above the block or `filename="path/to/file.ts"` in the attribute list.
+* **HTTP signature**: Add `method="POST"` and `endpoint="/v1/query"`.
+* **One-click copy**: Every code block automatically includes a clipboard copy button in the top-right corner.
+
+[source,typescript,filename="src/utils/retry.ts"]
+----
+export async function withRetry<T>(fn: () => Promise<T>, retries = 3): Promise<T> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt === retries) throw err;
+    }
+  }
+  throw new Error('Unreachable');
+}
+----
+
+== Interactive Tabs (`[tabs]`)
+
+Add `[tabs]` above an open block (`--`) or example block (`====`). Each child block with a `.Tab Title` becomes an interactive tab panel:
+
+[tabs]
+====
+.TypeScript
+[source,typescript]
+----
+const response = await fetch('https://api.example.com/v1/status');
+const data = await response.json();
+----
+
+.cURL
+[source,bash]
+----
+curl -i -X GET "https://api.example.com/v1/status" \
+  -H "Accept: application/json"
+----
+
+.AsciiDoc Source
+[source,asciidoc]
+----
+[tabs]
+--
+.TypeScript
+[source,typescript]
+....
+const response = await fetch('https://api.example.com/v1/status');
+....
+
+.cURL
+[source,bash]
+....
+curl -i -X GET "https://api.example.com/v1/status"
+....
+--
+----
+====
+
+== Definition Lists & Keyboard Shortcuts
+
+* **Keyboard shortcuts**: Use the `kbd:[Key]` macro (for example, `kbd:[Ctrl+Shift+P]`) to render styled keycaps: kbd:[Ctrl+Shift+P].
+* **Definition lists**: Use `Term:: Description` syntax to document CLI flags or configuration keys:
+
+`--host`:: Specify the network interface address for the development server to bind to.
+`--port`:: Specify the listening port number (defaults to `4321`).
+`--open`:: Automatically open the documentation site in your default browser on startup.

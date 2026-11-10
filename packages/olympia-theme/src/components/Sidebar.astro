@@ -1,0 +1,214 @@
+---
+import type { NavGroup } from '../types.ts';
+
+export interface Props {
+  groups: NavGroup[];
+  currentPath: string;
+}
+
+const { groups = [], currentPath = '/' } = Astro.props;
+
+function isActive(itemHref: string, current: string): boolean {
+  const normA = itemHref.replace(/\/+$/, '') || '/';
+  const normB = current.replace(/\/+$/, '') || '/';
+  return normA === normB;
+}
+---
+
+<nav class="o-sidebar-nav" aria-label="Documentation navigation">
+  {groups.map((group) => (
+    <details class="o-nav-group" open>
+      <summary class="o-nav-group__title">
+        <span>{group.category}</span>
+        <svg class="o-nav-group__chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m5 6.5 3 3 3-3" />
+        </svg>
+      </summary>
+      <ul class="o-nav-group__list">
+        {group.items.map((item) => {
+          const active = isActive(item.href, currentPath);
+          return (
+            <li class="o-nav-item">
+              <a
+                href={item.href}
+                class:list={['o-nav-link', { 'o-nav-link--active': active }]}
+                aria-current={active ? 'page' : undefined}
+              >
+                <span class="o-nav-link__text">
+                  {item.httpMethod && (
+                    <span class={`o-nav-verb o-nav-verb--${item.httpMethod.toLowerCase()}`}>
+                      {item.httpMethod.toUpperCase()}
+                    </span>
+                  )}
+                  <span>{item.title}</span>
+                </span>
+                {item.badge && (
+                  <span class={`o-nav-badge o-nav-badge--${item.badgeVariant || 'primary'}`}>
+                    {item.badge}
+                  </span>
+                )}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </details>
+  ))}
+</nav>
+
+<style>
+  .o-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.875rem 0.625rem 2rem;
+  }
+
+  .o-nav-group {
+    margin: 0;
+  }
+
+  .o-nav-group__title {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--o-text-muted);
+    cursor: pointer;
+    user-select: none;
+    border-radius: var(--radius-sm);
+  }
+
+  .o-nav-group__title::-webkit-details-marker {
+    display: none;
+  }
+
+  .o-nav-group__title:hover {
+    color: var(--o-text);
+  }
+
+  .o-nav-group__chevron {
+    width: 14px;
+    height: 14px;
+    transition: transform 150ms ease;
+  }
+
+  .o-nav-group:not([open]) .o-nav-group__chevron {
+    transform: rotate(-90deg);
+  }
+
+  .o-nav-group__list {
+    list-style: none;
+    margin: 0 0 0 0.5rem;
+    padding: 0 0 0 0.625rem;
+    border-left: 2px solid var(--o-border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .o-nav-item {
+    margin: 0;
+  }
+
+  .o-nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--o-text-secondary);
+    border-radius: var(--radius-DEFAULT);
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .o-nav-link:hover {
+    background-color: var(--o-surface-high);
+    color: var(--o-text);
+  }
+
+  .o-nav-link--active {
+    background-color: color-mix(in srgb, var(--o-primary) 14%, transparent);
+    color: var(--o-text);
+    font-weight: 500;
+  }
+
+  .o-nav-link--active::before {
+    content: '';
+    position: absolute;
+    left: -0.625rem;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    margin-left: -2px;
+    background-color: var(--o-primary);
+    border-radius: var(--radius-full);
+  }
+
+  .o-nav-link__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .o-nav-verb {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.05rem 0.3rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .o-nav-verb--get {
+    background-color: color-mix(in srgb, var(--o-primary) 15%, transparent);
+    color: var(--o-primary-text);
+  }
+
+  .o-nav-verb--post {
+    background-color: color-mix(in srgb, var(--o-secondary) 15%, transparent);
+    color: var(--o-secondary);
+  }
+
+  .o-nav-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.1rem 0.375rem;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .o-nav-badge--primary {
+    background-color: color-mix(in srgb, var(--o-primary) 16%, transparent);
+    color: var(--o-primary-text);
+    border: 1px solid color-mix(in srgb, var(--o-primary) 35%, transparent);
+  }
+
+  .o-nav-badge--secondary {
+    background-color: color-mix(in srgb, var(--o-secondary) 16%, transparent);
+    color: var(--o-secondary);
+    border: 1px solid color-mix(in srgb, var(--o-secondary) 35%, transparent);
+  }
+
+  .o-nav-badge--tertiary {
+    background-color: color-mix(in srgb, var(--o-tertiary) 16%, transparent);
+    color: var(--o-tertiary);
+    border: 1px solid color-mix(in srgb, var(--o-tertiary) 35%, transparent);
+  }
+</style>

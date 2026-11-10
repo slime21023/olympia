@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import { buildDocsNavigation, getAdjacentPages } from '@olympia/theme';
+import DocsLayout from '@olympia/theme/layouts/DocsLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('docs');
+  const { navGroups, flatItems } = buildDocsNavigation(entries);
+
+  return entries.map((entry) => {
+    const slug = entry.id === 'index' ? undefined : entry.id;
+    const { prevPage, nextPage } = getAdjacentPages(flatItems, entry.id);
+
+    return {
+      params: { slug },
+      props: {
+        entry,
+        navGroups,
+        searchDocs: flatItems,
+        prevPage,
+        nextPage,
+      },
+    };
+  });
+}
+
+const { entry, navGroups, searchDocs, prevPage, nextPage } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  category={entry.data.category}
+  badge={entry.data.badge}
+  badgeVariant={entry.data.badgeVariant}
+  httpMethod={entry.data.httpMethod}
+  endpoint={entry.data.endpoint}
+  headings={entry.data.headings}
+  navGroups={navGroups}
+  searchDocs={searchDocs}
+  prevPage={prevPage}
+  nextPage={nextPage}
+  siteTitle="Olympia"
+  version="v0.1.0"
+>
+  <Content />
+</DocsLayout>
