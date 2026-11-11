@@ -18,7 +18,14 @@ const { docs = [] } = Astro.props;
   >
     <div class="o-cmd-dialog__container">
       <div class="o-cmd-dialog__header">
-        <svg class="o-cmd-dialog__search-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+        <svg
+          class="o-cmd-dialog__search-icon"
+          viewBox="0 0 18 18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          aria-hidden="true"
+        >
           <circle cx="8" cy="8" r="5.5" />
           <path stroke-linecap="round" d="m12.2 12.2 3.5 3.5" />
         </svg>
@@ -46,11 +53,19 @@ const { docs = [] } = Astro.props;
 
       <div class="o-cmd-dialog__footer">
         <div class="o-cmd-dialog__hints">
-          <span><kbd class="o-kbd">↑</kbd> <kbd class="o-kbd">↓</kbd> to navigate</span>
-          <span><kbd class="o-kbd">↵</kbd> to open</span>
-          <span><kbd class="o-kbd">ESC</kbd> to dismiss</span>
+          <span>
+            <kbd class="o-kbd">↑</kbd> <kbd class="o-kbd">↓</kbd> to navigate
+          </span>
+          <span>
+            <kbd class="o-kbd">↵</kbd> to open
+          </span>
+          <span>
+            <kbd class="o-kbd">ESC</kbd> to dismiss
+          </span>
         </div>
-        <span class="o-cmd-dialog__engine" id="o-cmd-engine-status">Olympia Instant Index</span>
+        <span class="o-cmd-dialog__engine" id="o-cmd-engine-status">
+          Olympia Instant Index
+        </span>
       </div>
     </div>
   </dialog>
@@ -65,7 +80,9 @@ const { docs = [] } = Astro.props;
     border-radius: var(--radius-md); /* 12px per DESIGN.md Floating Modals & Command Bars */
     background-color: var(--o-surface-overlay);
     color: var(--o-text);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--o-border-subtle);
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      0 0 0 1px var(--o-border-subtle);
     overflow: hidden;
   }
 

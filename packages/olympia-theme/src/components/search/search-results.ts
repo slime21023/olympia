@@ -38,7 +38,9 @@ export function filterDocs(docs: SearchDocItem[], query: string): SearchResult[]
   const needle = query.trim().toLowerCase();
   const matches = needle
     ? docs.filter((doc) =>
-        [doc.title, doc.description, doc.category, doc.href].some((field) => field.toLowerCase().includes(needle))
+        [doc.title, doc.description, doc.category, doc.href].some((field) =>
+          field.toLowerCase().includes(needle),
+        ),
       )
     : docs;
   return matches.map(docToResult);

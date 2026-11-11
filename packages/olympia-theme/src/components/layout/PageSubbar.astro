@@ -14,7 +14,9 @@ const { category, title, headings = [] } = Astro.props;
 <div class="o-subbar">
   <div class="o-breadcrumb">
     <span class="o-breadcrumb__cat">{category}</span>
-    <span class="o-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="o-breadcrumb__sep" aria-hidden="true">
+      /
+    </span>
     <span class="o-breadcrumb__current">{title}</span>
   </div>
 

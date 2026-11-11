@@ -114,7 +114,7 @@ export function renderTabs(node: Block): string | undefined {
   });
   const panels = blocks.map(
     (child, idx) =>
-      `<div role="tabpanel" class="o-tabs__panel" data-panel-index="${idx}" ${idx === 0 ? '' : 'hidden'}>${child.convert()}</div>`
+      `<div role="tabpanel" class="o-tabs__panel" data-panel-index="${idx}" ${idx === 0 ? '' : 'hidden'}>${child.convert()}</div>`,
   );
   return `<o-tabs class="o-tabs">
               <div class="o-tabs__list" role="tablist">${buttons.join('')}</div>

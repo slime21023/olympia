@@ -20,11 +20,13 @@
   border-radius: var(--radius-DEFAULT);
   color: var(--o-text-secondary);
   text-decoration: none;
-  transition: background-color 120ms ease, color 120ms ease;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
 }
 
 .o-cmd-item:hover,
-.o-cmd-item[aria-selected="true"] {
+.o-cmd-item[aria-selected='true'] {
   background-color: color-mix(in srgb, var(--o-primary) 14%, transparent);
   color: var(--o-text);
 }

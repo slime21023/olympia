@@ -4,7 +4,10 @@ const FRONTMATTER_PATTERN = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/;
  * Extract frontmatter if present (`---\n...\n---`), returning remaining AsciiDoc source
  * and key-value frontmatter overrides.
  */
-export function extractFrontmatter(raw: string): { content: string; frontmatter: Record<string, string> } {
+export function extractFrontmatter(raw: string): {
+  content: string;
+  frontmatter: Record<string, string>;
+} {
   const match = raw.match(FRONTMATTER_PATTERN);
   if (!match) {
     return { content: raw, frontmatter: {} };

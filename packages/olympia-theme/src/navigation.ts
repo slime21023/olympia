@@ -52,13 +52,14 @@ function categoryRank(category: string, categoryOrder: readonly string[]): numbe
  */
 export function buildDocsNavigation(
   entries: DocCollectionEntry[],
-  categoryOrder: readonly string[] = DEFAULT_CATEGORY_ORDER
+  categoryOrder: readonly string[] = DEFAULT_CATEGORY_ORDER,
 ): BuiltNavigation {
   const groups = groupByCategory(entries.map(toNavItem));
 
   const navGroups = [...groups.entries()]
     .toSorted(
-      ([a], [b]) => categoryRank(a, categoryOrder) - categoryRank(b, categoryOrder) || a.localeCompare(b)
+      ([a], [b]) =>
+        categoryRank(a, categoryOrder) - categoryRank(b, categoryOrder) || a.localeCompare(b),
     )
     .map(([category, items]) => ({
       category,
@@ -70,7 +71,7 @@ export function buildDocsNavigation(
 
 export function getAdjacentPages(
   flatItems: NavItem[],
-  id: string
+  id: string,
 ): { prevPage: NavItem | null; nextPage: NavItem | null } {
   const index = flatItems.findIndex((item) => item.id === id);
   if (index === -1) return { prevPage: null, nextPage: null };

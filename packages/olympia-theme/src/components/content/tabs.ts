@@ -3,8 +3,12 @@ import { defineElement } from '../../utils/define-element.ts';
 /** <o-tabs>: click and ArrowLeft/ArrowRight (wrapping) tab switcher with roving tabindex. */
 class OlympiaTabs extends HTMLElement {
   connectedCallback() {
-    const tabs = [...this.querySelectorAll<HTMLButtonElement>(':scope > .o-tabs__list > [role="tab"]')];
-    const panels = [...this.querySelectorAll<HTMLElement>(':scope > .o-tabs__panels > [role="tabpanel"]')];
+    const tabs = [
+      ...this.querySelectorAll<HTMLButtonElement>(':scope > .o-tabs__list > [role="tab"]'),
+    ];
+    const panels = [
+      ...this.querySelectorAll<HTMLElement>(':scope > .o-tabs__panels > [role="tabpanel"]'),
+    ];
     if (tabs.length === 0) return;
 
     const selectTab = (index: number, focus = false) => {

@@ -29,13 +29,15 @@ export function resolveMeta(
   frontmatter: Record<string, string>,
   attributes: Record<string, string>,
   documentTitle: string,
-  fallbackTitle: string
+  fallbackTitle: string,
 ): AsciiDocMeta {
   return {
     title: firstNonEmpty(frontmatter.title, documentTitle, attributes.doctitle) ?? fallbackTitle,
-    description: firstNonEmpty(frontmatter.description, attributes.description, attributes.summary) ?? '',
+    description:
+      firstNonEmpty(frontmatter.description, attributes.description, attributes.summary) ?? '',
     category:
-      firstNonEmpty(frontmatter.category, attributes.category, attributes['nav-group']) ?? DEFAULT_CATEGORY,
+      firstNonEmpty(frontmatter.category, attributes.category, attributes['nav-group']) ??
+      DEFAULT_CATEGORY,
     order: parseOrder(frontmatter.order ?? attributes.order ?? attributes['nav-order']),
     badge: firstNonEmpty(frontmatter.badge, attributes.badge),
     // Cast is safe to defer: the content-collection zod schema validates the value.

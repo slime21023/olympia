@@ -10,7 +10,9 @@ export const CALLOUT_ICONS: Record<CalloutVariant, string> = {
 
 /** Returns the icon for an admonition name, falling back to the `note` icon for unknown names. */
 export function getCalloutIcon(name: string): string {
-  return Object.hasOwn(CALLOUT_ICONS, name) ? CALLOUT_ICONS[name as CalloutVariant] : CALLOUT_ICONS.note;
+  return Object.hasOwn(CALLOUT_ICONS, name)
+    ? CALLOUT_ICONS[name as CalloutVariant]
+    : CALLOUT_ICONS.note;
 }
 
 export const COPY_ICON = `<svg class="o-copy-btn__icon o-copy-btn__icon--copy" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">

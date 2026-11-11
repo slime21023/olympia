@@ -20,7 +20,7 @@ const docs = defineCollection({
           depth: z.number(),
           slug: z.string(),
           text: z.string(),
-        })
+        }),
       )
       .default([]),
   }),

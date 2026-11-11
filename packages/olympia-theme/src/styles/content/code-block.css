@@ -80,7 +80,10 @@
   border-radius: var(--radius-sm);
   color: var(--o-text-muted);
   cursor: pointer;
-  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
 }
 
 .o-copy-btn__trigger:hover {
@@ -99,15 +102,15 @@
   color: var(--o-secondary);
 }
 
-.o-copy-btn[data-copied="true"] .o-copy-btn__icon--copy {
+.o-copy-btn[data-copied='true'] .o-copy-btn__icon--copy {
   display: none;
 }
 
-.o-copy-btn[data-copied="true"] .o-copy-btn__icon--check {
+.o-copy-btn[data-copied='true'] .o-copy-btn__icon--check {
   display: block;
 }
 
-.o-copy-btn[data-copied="true"] .o-copy-btn__trigger {
+.o-copy-btn[data-copied='true'] .o-copy-btn__trigger {
   border-color: color-mix(in srgb, var(--o-secondary) 40%, transparent);
   background-color: color-mix(in srgb, var(--o-secondary) 8%, transparent);
 }

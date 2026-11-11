@@ -7,10 +7,10 @@
   /* Native UI color-scheme synchronization per modern-web-guidance (dark-mode & dark-mode-toggle) */
   color-scheme: light dark;
 
-  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+  &:has(> head > meta[name='color-scheme'][content='dark']) {
     color-scheme: dark;
   }
-  &:has(> head > meta[name="color-scheme"][content="light"]) {
+  &:has(> head > meta[name='color-scheme'][content='light']) {
     color-scheme: light;
   }
 
@@ -102,9 +102,15 @@
     --o-canvas: light-dark(var(--raw-canvas-light), var(--raw-canvas-dark));
     --o-surface: light-dark(var(--raw-surface-light), var(--raw-surface-dark));
     --o-surface-raised: light-dark(var(--raw-surface-raised-light), var(--raw-surface-raised-dark));
-    --o-surface-overlay: light-dark(var(--raw-surface-overlay-light), var(--raw-surface-overlay-dark));
+    --o-surface-overlay: light-dark(
+      var(--raw-surface-overlay-light),
+      var(--raw-surface-overlay-dark)
+    );
     --o-surface-high: light-dark(var(--raw-surface-high-light), var(--raw-surface-high-dark));
-    --o-surface-highest: light-dark(var(--raw-surface-highest-light), var(--raw-surface-highest-dark));
+    --o-surface-highest: light-dark(
+      var(--raw-surface-highest-light),
+      var(--raw-surface-highest-dark)
+    );
     --o-code-bg: light-dark(var(--raw-code-bg-light), var(--raw-code-bg-dark));
     --o-border: light-dark(var(--raw-border-light), var(--raw-border-dark));
     --o-border-subtle: light-dark(var(--raw-border-subtle-light), var(--raw-border-subtle-dark));
@@ -121,10 +127,10 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Shapes & Radii (DESIGN.md) */
-  --radius-sm: 0.25rem;   /* 4px */
+  --radius-sm: 0.25rem; /* 4px */
   --radius-DEFAULT: 0.5rem; /* 8px - Base tactile signature */
-  --radius-md: 0.75rem;   /* 12px - Floating modals & command bars */
-  --radius-lg: 1rem;      /* 16px */
+  --radius-md: 0.75rem; /* 12px - Floating modals & command bars */
+  --radius-lg: 1rem; /* 16px */
   --radius-full: 9999px;
 
   /* Layout Dimensions */

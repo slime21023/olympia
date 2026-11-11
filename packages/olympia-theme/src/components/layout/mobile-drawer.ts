@@ -36,7 +36,7 @@ function initMobileDrawer(): void {
         openBtn.setAttribute('aria-expanded', 'true');
       }
     },
-    { root: drawer, threshold: [visibleThreshold, 1] }
+    { root: drawer, threshold: [visibleThreshold, 1] },
   );
   observer.observe(sheet);
 

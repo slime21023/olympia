@@ -70,7 +70,10 @@ class OlympiaHtml5Converter {
  * Emits 11ty WebC-style custom elements (`<o-code-block>`, `<o-copy-btn>`, `<o-callout>`, `<o-tabs>`)
  * for zero-framework progressive enhancement.
  */
-export async function compileAsciiDoc(rawSource: string, fallbackTitle = 'Untitled'): Promise<CompiledAsciiDoc> {
+export async function compileAsciiDoc(
+  rawSource: string,
+  fallbackTitle = 'Untitled',
+): Promise<CompiledAsciiDoc> {
   const highlighter = await getOlympiaHighlighter();
   const { content, frontmatter } = extractFrontmatter(rawSource);
   const ctx: RenderContext = { highlighter, headings: [] };
@@ -88,7 +91,7 @@ export async function compileAsciiDoc(rawSource: string, fallbackTitle = 'Untitl
     frontmatter,
     attributes,
     documentTitle ? htmlToPlainText(String(documentTitle)) : '',
-    fallbackTitle
+    fallbackTitle,
   );
 
   // Headings are collected while converting, so read them only after `convert()` returns.

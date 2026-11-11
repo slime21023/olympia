@@ -117,7 +117,9 @@ class OlympiaSearchModal extends HTMLElement {
   private async searchPagefind(pagefind: PagefindModule, query: string): Promise<SearchResult[]> {
     try {
       const { results } = await pagefind.search(query);
-      const top = await Promise.all(results.slice(0, MAX_FULLTEXT_RESULTS).map((result) => result.data()));
+      const top = await Promise.all(
+        results.slice(0, MAX_FULLTEXT_RESULTS).map((result) => result.data()),
+      );
       return top.map(pagefindToResult);
     } catch {
       // Search failed: fall through to the metadata filter.

@@ -17,9 +17,7 @@ const { title, description, category, badge, badgeVariant, httpMethod, endpoint 
 <header class="o-doc-header">
   <div class="o-doc-header__eyebrow">
     <span class="o-doc-header__category">{category}</span>
-    {badge && (
-      <span class={`o-doc-badge o-doc-badge--${badgeVariant}`}>{badge}</span>
-    )}
+    {badge && <span class={`o-doc-badge o-doc-badge--${badgeVariant}`}>{badge}</span>}
     {httpMethod && endpoint && (
       <span class="o-doc-endpoint-pill">
         <span class={`o-code-verb o-code-verb--${httpMethod.toLowerCase()}`}>

@@ -60,4 +60,7 @@ export interface BuiltNavigation {
   flatItems: NavItem[];
 }
 
-export type SearchDocItem = Pick<NavItem, 'title' | 'description' | 'category' | 'href' | 'httpMethod'>;
+export type SearchDocItem = Pick<
+  NavItem,
+  'title' | 'description' | 'category' | 'href' | 'httpMethod'
+>;

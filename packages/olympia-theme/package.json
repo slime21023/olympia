@@ -1,17 +1,17 @@
 {
   "name": "@olympia/theme",
   "version": "0.1.0",
-  "type": "module",
   "description": "Olympia documentation theme for Astro with native AsciiDoc support and lightweight custom elements",
-  "scripts": {
-    "check": "astro check"
-  },
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./loader": "./src/loader/asciidoc-loader.ts",
     "./layouts/*": "./src/layouts/*",
     "./components/*": "./src/components/*",
     "./styles/*": "./src/styles/*"
+  },
+  "scripts": {
+    "check": "astro check"
   },
   "dependencies": {
     "@asciidoctor/core": "^3.0.4",

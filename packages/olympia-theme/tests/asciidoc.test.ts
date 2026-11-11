@@ -61,10 +61,14 @@ Rate limit exceeded on v1 endpoints.
 
     const result = await compileAsciiDoc(adoc);
 
-    expect(result.html).toContain('<o-callout class="o-callout o-callout--note" data-variant="note"');
+    expect(result.html).toContain(
+      '<o-callout class="o-callout o-callout--note" data-variant="note"',
+    );
     expect(result.html).toContain('<o-callout class="o-callout o-callout--tip" data-variant="tip"');
     expect(result.html).toContain('Performance Hint');
-    expect(result.html).toContain('<o-callout class="o-callout o-callout--warning" data-variant="warning"');
+    expect(result.html).toContain(
+      '<o-callout class="o-callout o-callout--warning" data-variant="warning"',
+    );
   });
 
   test('converts source code blocks with Shiki syntax highlighting and copy button', async () => {
@@ -114,7 +118,7 @@ pnpm install
 
   test('frontmatter overrides AsciiDoc attributes', async () => {
     const result = await compileAsciiDoc(
-      '---\ntitle: FM Title\ncategory: FM Cat\n---\n= Doc Title\n:category: Attr Cat\n'
+      '---\ntitle: FM Title\ncategory: FM Cat\n---\n= Doc Title\n:category: Attr Cat\n',
     );
     expect(result.meta.title).toBe('FM Title');
     expect(result.meta.category).toBe('FM Cat');

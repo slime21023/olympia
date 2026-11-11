@@ -47,7 +47,9 @@ const { prevPage = null, nextPage = null } = Astro.props;
     border: 1px solid var(--o-border);
     border-radius: var(--radius-DEFAULT);
     background-color: var(--o-surface);
-    transition: border-color 150ms ease, background-color 150ms ease;
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease;
   }
 
   .o-pagination__card:hover {

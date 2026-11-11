@@ -22,7 +22,9 @@
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--o-primary) 40%, transparent);
   text-underline-offset: 3px;
-  transition: text-decoration-color 150ms ease, color 150ms ease;
+  transition:
+    text-decoration-color 150ms ease,
+    color 150ms ease;
 }
 
 .o-prose a:not(.o-heading__anchor):hover {
@@ -105,7 +107,9 @@
   color: var(--o-primary);
   opacity: 0;
   transform: translateX(-4px);
-  transition: opacity 150ms ease, transform 150ms ease;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
 }
 
 .o-heading:hover .o-heading__glyph,

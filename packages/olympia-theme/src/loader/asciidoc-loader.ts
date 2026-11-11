@@ -25,7 +25,7 @@ async function findAsciiDocFiles(dir: string): Promise<string[]> {
       const fullPath = join(dir, entry.name);
       if (entry.isDirectory()) return findAsciiDocFiles(fullPath);
       return entry.isFile() && isAsciiDocFile(entry.name) ? [fullPath] : [];
-    })
+    }),
   );
   return nested.flat();
 }

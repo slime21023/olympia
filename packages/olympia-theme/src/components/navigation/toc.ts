@@ -36,7 +36,7 @@ class OlympiaToc extends HTMLElement {
       {
         rootMargin: '-72px 0px -75% 0px',
         threshold: [0, 1],
-      }
+      },
     );
 
     for (const target of targets) {

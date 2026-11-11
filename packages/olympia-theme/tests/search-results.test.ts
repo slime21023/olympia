@@ -5,7 +5,12 @@ import type { SearchDocItem } from '../src/types.ts';
 describe('renderSearchResults', () => {
   test('escapes titles, categories and hrefs but keeps excerpt markup', () => {
     const html = renderSearchResults([
-      { title: '<img src=x onerror=alert(1)>', excerptHtml: 'a <mark>b</mark>', category: '<b>', href: '/x"y' },
+      {
+        title: '<img src=x onerror=alert(1)>',
+        excerptHtml: 'a <mark>b</mark>',
+        category: '<b>',
+        href: '/x"y',
+      },
     ]);
     expect(html).toContain('&lt;img src=x onerror=alert(1)&gt;');
     expect(html).toContain('&lt;b&gt;');

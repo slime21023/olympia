@@ -14,7 +14,12 @@ describe('buildDocsNavigation', () => {
       entry('c', { category: 'Alpha' }),
       entry('d', { category: 'Getting Started' }),
     ]);
-    expect(navGroups.map((g) => g.category)).toEqual(['Getting Started', 'API Reference', 'Alpha', 'Zeta']);
+    expect(navGroups.map((g) => g.category)).toEqual([
+      'Getting Started',
+      'API Reference',
+      'Alpha',
+      'Zeta',
+    ]);
   });
 
   test('sorts items by order, then title', () => {

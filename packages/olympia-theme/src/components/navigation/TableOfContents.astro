@@ -11,7 +11,14 @@ const { headings = [] } = Astro.props;
 {headings.length > 0 && (
   <o-toc class="o-toc">
     <div class="o-toc__header">
-      <svg class="o-toc__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <svg
+        class="o-toc__icon"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"
+      >
         <path stroke-linecap="round" d="M2.5 4h11M2.5 8h7.5M2.5 12h9.5" />
       </svg>
       <span>On this page</span>
@@ -90,12 +97,12 @@ const { headings = [] } = Astro.props;
     color: var(--o-text);
   }
 
-  .o-toc__link[data-active="true"] {
+  .o-toc__link[data-active='true'] {
     color: var(--o-primary-text);
     font-weight: 500;
   }
 
-  .o-toc__link[data-active="true"]::before {
+  .o-toc__link[data-active='true']::before {
     content: '';
     position: absolute;
     left: -1px;

@@ -29,14 +29,16 @@
   border-bottom: 2px solid transparent;
   color: var(--o-text-muted);
   cursor: pointer;
-  transition: color 150ms ease, border-color 150ms ease;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
 }
 
 .o-tabs__tab:hover {
   color: var(--o-text);
 }
 
-.o-tabs__tab[aria-selected="true"] {
+.o-tabs__tab[aria-selected='true'] {
   color: var(--o-primary-text);
   border-bottom-color: var(--o-primary);
 }
