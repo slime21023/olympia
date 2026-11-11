@@ -1,0 +1,26 @@
+.o-prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+.o-prose .imageblock,
+.o-prose .videoblock {
+  margin: 1.75rem 0;
+}
+
+.o-prose .imageblock img {
+  border-radius: var(--radius-DEFAULT);
+}
+
+.o-prose .imageblock > .title,
+.o-prose .videoblock > .title {
+  margin-top: 0.5rem;
+  font-size: 13px;
+  color: var(--o-text-muted);
+}
+
+.o-prose .videoblock video,
+.o-prose .videoblock iframe {
+  max-width: 100%;
+  border-radius: var(--radius-DEFAULT);
+}

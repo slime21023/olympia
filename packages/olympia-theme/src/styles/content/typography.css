@@ -84,6 +84,23 @@
   margin-bottom: 0.75rem;
 }
 
+.o-heading--l5 {
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.o-heading--l6 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--o-text-secondary);
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
 @media (max-width: 767px) {
   .o-heading--l2 {
     font-size: 22px;

@@ -149,4 +149,14 @@ pnpm install
     const result = await compileAsciiDoc('= T\n\nlatexmath:[\\frac{]\n');
     expect(result.html).toContain('katex-error');
   });
+
+  test('resolves relative images against the site root by default', async () => {
+    const result = await compileAsciiDoc('= T\n\nimage::foo.png[Foo]\n');
+    expect(result.html).toContain('src="/foo.png"');
+  });
+
+  test('a document can override imagesdir', async () => {
+    const result = await compileAsciiDoc('= T\n:imagesdir: assets\n\nimage::foo.png[Foo]\n');
+    expect(result.html).toContain('src="assets/foo.png"');
+  });
 });

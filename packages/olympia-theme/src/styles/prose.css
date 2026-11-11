@@ -8,4 +8,6 @@
 @import './content/callout.css';
 @import './content/tabs.css';
 @import './content/table.css';
+@import './content/media.css';
+@import './content/blocks.css';
 @import './content/math.css';

@@ -1,0 +1,124 @@
+/* Quote and verse blocks */
+.o-prose .quoteblock blockquote,
+.o-prose .verseblock pre {
+  margin: 1.75rem 0 0.5rem;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 3px solid var(--o-border);
+  color: var(--o-text-secondary);
+}
+
+.o-prose .verseblock pre {
+  font-family: var(--font-sans);
+  white-space: pre-wrap;
+}
+
+.o-prose .quoteblock .attribution,
+.o-prose .verseblock .attribution {
+  margin-bottom: 1.75rem;
+  font-size: 13px;
+  color: var(--o-text-muted);
+}
+
+.o-prose .quoteblock .attribution cite,
+.o-prose .verseblock .attribution cite {
+  font-style: normal;
+}
+
+/* Sidebar and example blocks */
+.o-prose .sidebarblock {
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  background-color: var(--o-surface-raised);
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-DEFAULT);
+}
+
+.o-prose .exampleblock {
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-DEFAULT);
+}
+
+.o-prose .sidebarblock > .content > .title,
+.o-prose .exampleblock > .title {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--o-text);
+}
+
+/* Literal blocks */
+.o-prose .literalblock pre {
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  background-color: var(--o-code-bg);
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-DEFAULT);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 22px;
+  overflow-x: auto;
+}
+
+.o-prose hr {
+  border: 0;
+  border-top: 1px solid var(--o-border);
+  margin: 2.5rem 0;
+}
+
+/* Footnotes */
+.o-prose #footnotes {
+  margin-top: 3rem;
+  font-size: 13px;
+  color: var(--o-text-muted);
+}
+
+.o-prose #footnotes hr {
+  margin: 0 0 1rem;
+  width: 4rem;
+}
+
+.o-prose #footnotes .footnote {
+  margin-bottom: 0.375rem;
+}
+
+.o-prose sup.footnote a {
+  color: var(--o-primary-text);
+  text-decoration: none;
+}
+
+/* Horizontal description list */
+.o-prose .hdlist table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.o-prose .hdlist td.hdlist1 {
+  padding: 0.25rem 1.25rem 0.25rem 0;
+  vertical-align: top;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--o-primary-text);
+}
+
+.o-prose .hdlist td.hdlist2 {
+  padding: 0.25rem 0;
+}
+
+.o-prose .hdlist td.hdlist2 > p:last-child {
+  margin: 0;
+}
+
+/* `btn:[]` macro */
+.o-prose b.button {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--o-surface-overlay);
+  color: var(--o-text);
+}

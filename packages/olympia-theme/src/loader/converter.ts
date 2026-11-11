@@ -29,6 +29,9 @@ export interface CompiledAsciiDoc {
 
 const ASCIIDOC_ATTRIBUTES = {
   experimental: '',
+  // Relative image targets resolve to the site root, so images live in the site's `public/` folder.
+  // A document can still override this with `:imagesdir:`.
+  imagesdir: '/@',
   icons: 'font',
   sectanchors: '',
   'source-highlighter': 'none',
