@@ -14,9 +14,11 @@
     "test": "bun test packages/olympia-theme/tests",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "typecheck": "tsc -p packages/olympia-theme"
+    "typecheck": "tsc -p packages/olympia-theme",
+    "check": "bun --cwd apps/docs check && bun --cwd packages/olympia-theme check"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@types/bun": "latest",
     "oxlint": "^1.93.0",
     "typescript": "^5.8.2"
