@@ -18,6 +18,7 @@ import {
   renderKbd,
   renderListing,
   renderMenu,
+  renderMermaid,
   renderSection,
   renderStemBlock,
   renderTabs,
@@ -59,8 +60,17 @@ class OlympiaHtml5Converter {
         return renderSection(node as Section, this.ctx);
       case 'admonition':
         return renderAdmonition(node as Block);
-      case 'listing':
-        return renderListing(node as Block, this.ctx);
+      case 'listing': {
+        // `[mermaid]` blocks and `[source,mermaid]` listings are diagrams, not highlighted code.
+        const block = node as Block;
+        return block.getStyle() === 'mermaid' || block.getAttribute('language') === 'mermaid'
+          ? renderMermaid(block)
+          : renderListing(block, this.ctx);
+      }
+      case 'literal':
+        return (node as Block).getStyle() === 'mermaid'
+          ? renderMermaid(node as Block)
+          : this.base.convert(node, transform, opts);
       case 'open':
       case 'example':
         return renderTabs(node as Block) ?? this.base.convert(node, transform, opts);

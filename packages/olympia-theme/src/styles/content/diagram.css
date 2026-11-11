@@ -1,0 +1,26 @@
+.o-mermaid {
+  display: block;
+  margin: 1.75rem 0;
+  padding: 1rem;
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-DEFAULT);
+  background-color: var(--o-surface);
+  overflow-x: auto;
+}
+
+.o-mermaid[data-rendered='true'] .o-mermaid__source {
+  display: none;
+}
+
+.o-mermaid__source {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.o-mermaid__diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}

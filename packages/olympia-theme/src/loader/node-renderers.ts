@@ -186,3 +186,10 @@ export function renderMenu(node: Inline): string {
   const submenuHtml = submenus.map((submenu) => `<b class="submenu">${submenu}</b>${caret}`);
   return `<span class="menuseq"><b class="menu">${menu}</b>${caret}${submenuHtml.join('')}<b class="menuitem">${menuitem}</b></span>`;
 }
+
+/** `[mermaid]` blocks keep their source in the HTML; `<o-mermaid>` renders it in the browser. */
+export function renderMermaid(node: Block): string {
+  const title = node.getTitle();
+  const titleHtml = title ? `<div class="title">${title}</div>` : '';
+  return `<o-mermaid class="o-mermaid">${titleHtml}<pre class="o-mermaid__source">${escapeHtml(node.getSource())}</pre></o-mermaid>`;
+}

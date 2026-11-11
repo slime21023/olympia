@@ -184,4 +184,18 @@ pnpm install
     expect(decodeURIComponent(copied)).toBe('const a = 1;\nconst b = 2;');
     expect(result.html).toContain('<div class="colist arabic">\n<ol>');
   });
+
+  test('renders [mermaid] blocks as diagram elements with escaped source', async () => {
+    const result = await compileAsciiDoc('= T\n\n[mermaid]\n----\ngraph TD; A-->B\n----\n');
+    expect(result.html).toContain('<o-mermaid class="o-mermaid">');
+    expect(result.html).toContain('A--&gt;B');
+    expect(result.html).not.toContain('o-code-block');
+  });
+
+  test('renders [source,mermaid] and literal mermaid blocks as diagrams too', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n\n[source,mermaid]\n----\ngraph TB; E-->F\n----\n\n[mermaid]\n....\ngraph LR; C-->D\n....\n',
+    );
+    expect(result.html.match(/<o-mermaid /g)).toHaveLength(2);
+  });
 });

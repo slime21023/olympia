@@ -1,23 +1,14 @@
+import {
+  getColorSchemeMeta,
+  getRenderedScheme,
+  getSystemScheme,
+  type Scheme,
+} from '../../utils/color-scheme.ts';
 import { defineElement } from '../../utils/define-element.ts';
 
 // Must match the `is:inline` color-scheme bootstrap in `layouts/DocsLayout.astro`.
 const STORAGE_KEY = 'color-scheme';
 const AUTO_SCHEME = 'light dark';
-
-type Scheme = 'dark' | 'light';
-
-function getMeta(): HTMLMetaElement | null {
-  return document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
-}
-
-function getSystemScheme(): Scheme {
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-}
-
-function getRenderedScheme(): Scheme {
-  const metaValue = getMeta()?.content;
-  return metaValue === 'light' || metaValue === 'dark' ? metaValue : getSystemScheme();
-}
 
 /**
  * <o-theme-toggle> implementing modern-web-guidance `dark-mode-toggle`:
@@ -31,7 +22,7 @@ class OlympiaThemeToggle extends HTMLElement {
 
     button.addEventListener('click', () => {
       const target: Scheme = getRenderedScheme() === 'dark' ? 'light' : 'dark';
-      const meta = getMeta();
+      const meta = getColorSchemeMeta();
 
       try {
         if (target === getSystemScheme()) {
@@ -49,7 +40,7 @@ class OlympiaThemeToggle extends HTMLElement {
 
     window.addEventListener('storage', (event) => {
       if (event.key !== STORAGE_KEY) return;
-      const meta = getMeta();
+      const meta = getColorSchemeMeta();
       if (meta) meta.content = event.newValue ?? AUTO_SCHEME;
     });
   }
