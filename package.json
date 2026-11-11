@@ -14,8 +14,8 @@
     "test": "bun test packages/olympia-theme/tests",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check",
+    "fmt": "oxfmt --threads=1",
+    "fmt:check": "oxfmt --check --threads=1",
     "typecheck": "tsc -p packages/olympia-theme",
     "check": "bun --cwd apps/docs check && bun --cwd packages/olympia-theme check"
   },
