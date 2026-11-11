@@ -134,4 +134,19 @@ pnpm install
     const result = await compileAsciiDoc('= Plain\n:order: abc\n');
     expect(result.meta.order).toBe(99);
   });
+
+  test('renders inline and block math with KaTeX at build time', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n\nstem:[x^2] and latexmath:[\\frac{a}{b}]\n\n[latexmath]\n++++\n\\int_0^1 x\\,dx\n++++\n',
+    );
+    expect(result.html).toContain('class="katex"');
+    expect(result.html).toContain('class="katex-display"');
+    expect(result.html).not.toContain('\\(');
+    expect(result.html).not.toContain('\\$');
+  });
+
+  test('invalid TeX does not throw and renders a KaTeX error span', async () => {
+    const result = await compileAsciiDoc('= T\n\nlatexmath:[\\frac{]\n');
+    expect(result.html).toContain('katex-error');
+  });
 });

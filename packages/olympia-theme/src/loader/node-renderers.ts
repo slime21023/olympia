@@ -4,6 +4,7 @@ import { CHECK_ICON, COPY_ICON, getCalloutIcon } from '../icons.ts';
 import type { HeadingItem } from '../types.ts';
 import { escapeHtml, htmlToPlainText, unescapeHtml } from '../utils/html.ts';
 import { highlightCode, resolveLanguage } from './highlighter.ts';
+import { renderMath, type MathNotation } from './math.ts';
 
 export interface RenderContext {
   highlighter: Highlighter;
@@ -126,4 +127,16 @@ export function renderKbd(node: Inline): string {
   const keys = (node.getAttribute('keys') || []) as string[];
   const keyElements = keys.map((key) => `<kbd class="o-kbd">${escapeHtml(key)}</kbd>`);
   return `<span class="o-kbd-group">${keyElements.join('<span class="o-kbd-plus">+</span>')}</span>`;
+}
+
+/** Inline `stem:[]` / `latexmath:[]` / `asciimath:[]`. Asciidoctor HTML-escapes the text, so decode it first. */
+export function renderInlineMath(node: Inline): string {
+  return renderMath(unescapeHtml(node.getText()), node.getType() as MathNotation, false);
+}
+
+/** Block `[stem]` / `[latexmath]` / `[asciimath]`, rendered in display mode. */
+export function renderStemBlock(node: Block): string {
+  const title = node.getTitle();
+  const titleHtml = title ? `<div class="title">${title}</div>` : '';
+  return `<div class="o-math-block">${titleHtml}${renderMath(node.getSource(), node.getStyle() as MathNotation, true)}</div>`;
 }

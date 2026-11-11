@@ -12,9 +12,11 @@ import { getOlympiaHighlighter } from './highlighter.ts';
 import { collectStringAttributes, resolveMeta } from './metadata.ts';
 import {
   renderAdmonition,
+  renderInlineMath,
   renderKbd,
   renderListing,
   renderSection,
+  renderStemBlock,
   renderTabs,
   type RenderContext,
 } from './node-renderers.ts';
@@ -59,6 +61,14 @@ class OlympiaHtml5Converter {
         return renderTabs(node as Block) ?? this.base.convert(node, transform, opts);
       case 'inline_kbd':
         return renderKbd(node as Inline);
+      case 'stem':
+        return renderStemBlock(node as Block);
+      case 'inline_quoted': {
+        const type = (node as Inline).getType();
+        return type === 'asciimath' || type === 'latexmath'
+          ? renderInlineMath(node as Inline)
+          : this.base.convert(node, transform, opts);
+      }
       default:
         return this.base.convert(node, transform, opts);
     }
