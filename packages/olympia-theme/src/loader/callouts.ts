@@ -30,5 +30,10 @@ export function extractCallouts(source: string): ExtractedCallouts {
     return line.slice(0, match.index).trimEnd();
   });
 
-  return { code: lines.map((line) => line.replace(ESCAPED_MARKER, '$1')).join('\n'), callouts };
+  return { code: lines.map(unescapeCalloutMarkers).join('\n'), callouts };
+}
+
+/** Restores escaped markers (`\<1>`) to literal text, for code whose markers are not callouts. */
+export function unescapeCalloutMarkers(source: string): string {
+  return source.replace(ESCAPED_MARKER, '$1');
 }

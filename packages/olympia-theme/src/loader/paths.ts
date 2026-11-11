@@ -23,6 +23,17 @@ export function isPartialPath(relativePath: string): boolean {
     .some((segment) => segment.startsWith('_'));
 }
 
+const EDITOR_TEMP_FILE = /(~|\.(swp|swx|tmp))$|^4913$/;
+
+/** True for hidden files and folders and for editor swap/temp files, which never affect any page. */
+export function isEditorNoise(relativePath: string): boolean {
+  const segments = toPosixPath(relativePath).split('/');
+  return (
+    segments.some((segment) => segment.startsWith('.')) ||
+    EDITOR_TEMP_FILE.test(segments.at(-1) ?? '')
+  );
+}
+
 /** `guide/index.adoc` -> `guide`, `index.adoc` -> `index`, `a/b.asciidoc` -> `a/b`. */
 export function normalizeEntryId(baseDir: string, filePath: string): string {
   const withoutExt = toPosixPath(relative(baseDir, filePath)).replace(ASCIIDOC_EXTENSION, '');

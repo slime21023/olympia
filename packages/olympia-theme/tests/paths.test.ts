@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'bun:test';
 import { join } from 'node:path';
-import { isInsideDirectory, isPartialPath, normalizeEntryId } from '../src/loader/paths.ts';
+import {
+  isEditorNoise,
+  isInsideDirectory,
+  isPartialPath,
+  normalizeEntryId,
+} from '../src/loader/paths.ts';
 
 describe('isInsideDirectory', () => {
   test('rejects a sibling directory sharing the name prefix', () => {
@@ -33,5 +38,20 @@ describe('isPartialPath', () => {
 
   test('regular pages are not partials', () => {
     expect(isPartialPath(join('guide', 'x.adoc'))).toBe(false);
+  });
+});
+
+describe('isEditorNoise', () => {
+  test('flags hidden entries and editor swap or temp files', () => {
+    expect(isEditorNoise('.DS_Store')).toBe(true);
+    expect(isEditorNoise(join('guide', '.git', 'HEAD'))).toBe(true);
+    expect(isEditorNoise('x.adoc.swp')).toBe(true);
+    expect(isEditorNoise('x.adoc~')).toBe(true);
+    expect(isEditorNoise('4913')).toBe(true);
+  });
+
+  test('keeps pages and partials', () => {
+    expect(isEditorNoise(join('guide', 'x.adoc'))).toBe(false);
+    expect(isEditorNoise(join('_partials', 'note.adoc'))).toBe(false);
   });
 });

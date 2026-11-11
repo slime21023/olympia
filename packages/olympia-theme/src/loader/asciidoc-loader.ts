@@ -5,6 +5,7 @@ import type { Loader } from 'astro/loaders';
 import { compileAsciiDoc } from './converter.ts';
 import {
   isAsciiDocFile,
+  isEditorNoise,
   isInsideDirectory,
   isPartialPath,
   normalizeEntryId,
@@ -20,7 +21,8 @@ export interface AsciiDocLoaderOptions {
 
 /**
  * Recursively lists AsciiDoc pages; a missing directory yields no files.
- * Files and folders whose name starts with `_` are partials (include targets), not pages.
+ * Files and folders whose name starts with `_` are partials (include targets), not pages; hidden
+ * entries (`.git`, `.DS_Store`) are skipped.
  */
 async function findAsciiDocFiles(dir: string): Promise<string[]> {
   let entries;
@@ -31,7 +33,7 @@ async function findAsciiDocFiles(dir: string): Promise<string[]> {
   }
   const nested = await Promise.all(
     entries.map(async (entry) => {
-      if (entry.name.startsWith('_')) return [];
+      if (entry.name.startsWith('_') || entry.name.startsWith('.')) return [];
       const fullPath = join(dir, entry.name);
       if (entry.isDirectory()) return findAsciiDocFiles(fullPath);
       return entry.isFile() && isAsciiDocFile(entry.name) ? [fullPath] : [];
@@ -91,14 +93,15 @@ export function asciidocLoader(options: AsciiDocLoaderOptions): Loader {
 
       /**
        * `page`: an AsciiDoc page. `dependency`: any other file under `baseDir` (partials, included
-       * code), which can change any page that includes it. `null`: outside `baseDir`, ignored.
+       * code), which can change any page that includes it. `null`: outside `baseDir`, or hidden or
+       * editor temp files, which are ignored.
        */
       function classifyChange(changedPath: string): 'page' | 'dependency' | null {
         const absolutePath = resolve(changedPath);
         if (!isInsideDirectory(baseDir, absolutePath)) return null;
-        const isPage =
-          isAsciiDocFile(absolutePath) && !isPartialPath(relative(baseDir, absolutePath));
-        return isPage ? 'page' : 'dependency';
+        const relativePath = relative(baseDir, absolutePath);
+        if (isEditorNoise(relativePath)) return null;
+        return isAsciiDocFile(absolutePath) && !isPartialPath(relativePath) ? 'page' : 'dependency';
       }
 
       store.clear();

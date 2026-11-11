@@ -156,6 +156,7 @@ pnpm install
       '= T\n\nstem:[x^2] and latexmath:[\\frac{a}{b}]\n\n[latexmath]\n++++\n\\int_0^1 x\\,dx\n++++\n',
     );
     expect(result.html).toContain('class="katex"');
+    expect(result.html).toContain('class="katex" data-pagefind-ignore');
     expect(result.html).toContain('class="katex-display"');
     expect(result.html).not.toContain('\\(');
     expect(result.html).not.toContain('\\$');
@@ -199,6 +200,15 @@ pnpm install
     const copied = /data-code="([^"]*)"/.exec(result.html)?.[1] ?? '';
     expect(decodeURIComponent(copied)).toBe('const a = 1;\nconst b = 2;');
     expect(result.html).toContain('<div class="colist arabic">\n<ol>');
+  });
+
+  test('keeps trailing <1> as code when no callout list follows the block', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n\n[source,typescript]\n----\ntype A = Foo<1>\nconst b = 1; // \\<2>\n----\n',
+    );
+    expect(result.html).not.toContain('o-conum');
+    const copied = /data-code="([^"]*)"/.exec(result.html)?.[1] ?? '';
+    expect(decodeURIComponent(copied)).toBe('type A = Foo<1>\nconst b = 1; // <2>');
   });
 
   test('shows HTML entities in code blocks literally and copies them unchanged', async () => {

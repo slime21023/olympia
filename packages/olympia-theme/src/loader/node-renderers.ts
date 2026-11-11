@@ -10,7 +10,7 @@ import {
 } from '../icons.ts';
 import type { HeadingItem } from '../types.ts';
 import { escapeHtml, htmlToPlainText, unescapeHtml } from '../utils/html.ts';
-import { extractCallouts } from './callouts.ts';
+import { extractCallouts, unescapeCalloutMarkers } from './callouts.ts';
 import { highlightCode, resolveLanguage } from './highlighter.ts';
 import { renderMath, type MathNotation } from './math.ts';
 
@@ -95,10 +95,16 @@ export function renderListing(node: Block, ctx: RenderContext): string {
   const endpoint = node.getAttribute('endpoint') || '';
   // `getSource()` is the raw text, not HTML-escaped; Shiki and the copy button escape/encode it themselves.
   const rawCode = String(node.getSource() || '');
+  // As in Asciidoctor, trailing `<1>` markers are callouts only when a callout list follows the block.
+  // Otherwise they stay code, so `type A = Foo<1>` is not mistaken for a callout.
+  const siblings: AbstractBlock[] = (node.getParent() as AbstractBlock).getBlocks();
+  const hasCalloutList = siblings[siblings.indexOf(node) + 1]?.getContext() === 'colist';
   // Callout markers are shown as badges, so the highlighted and copied code excludes them.
-  const { code, callouts } = extractCallouts(rawCode);
+  const { code, callouts } = hasCalloutList
+    ? extractCallouts(rawCode)
+    : { code: unescapeCalloutMarkers(rawCode), callouts: new Map<number, number[]>() };
   // Converting the block registers its callouts with Asciidoctor, which the following callout list
-  // needs to resolve its numbers. The output is not used; the Shiki output above replaces it.
+  // needs to resolve its numbers. The output is not used; the Shiki output below replaces it.
   if (callouts.size > 0) node.getContent();
 
   const lang = resolveLanguage(ctx.highlighter, rawLang);

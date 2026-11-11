@@ -20,5 +20,10 @@ export function renderMath(source: string, notation: MathNotation, displayMode: 
       return `<code class="o-math-error">${escapeHtml(source)}</code>`;
     }
   }
-  return renderToString(tex, { displayMode, throwOnError: false });
+  // KaTeX emits both MathML and a visual copy of the formula, which would show up twice in search
+  // excerpts, so the whole formula is left out of the Pagefind index.
+  return renderToString(tex, { displayMode, throwOnError: false }).replace(
+    'class="katex"',
+    'class="katex" data-pagefind-ignore',
+  );
 }

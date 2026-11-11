@@ -265,8 +265,9 @@ file also works, and its values win over header attributes.
   `[latexmath]` blocks.
 - **Images**: `image::images/diagram.svg[Alt text]`. Relative paths resolve against the site root, so
   keep image files in the site's `public/` folder, or set `:imagesdir:` in the document.
-- **Code callouts**: end a code line with `// <1>` and add a `<1> Explanation` list after the block. To
-  show a literal `<1>`, write `\<1>`.
+- **Code callouts**: end a code line with `// <1>` and add a `<1> Explanation` list right after the block.
+  Markers count as callouts only when that list follows. To show a literal `<1>` next to a list, write
+  `\<1>`.
 - **Task lists, menus and buttons**: `* [x] Done`, `menu:File[Export > PDF]`, `btn:[Save]`.
 - **Diagrams**: a `[mermaid]` block with Mermaid source.
 - **Includes**: `include::_partials/note.adoc[]` resolves relative to the current file and must stay in the

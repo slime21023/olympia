@@ -17,6 +17,8 @@
   text-align: left;
   border-bottom: 1px solid var(--o-border);
   vertical-align: top;
+  /* Lets a long unbreakable word (such as inline code) wrap, so a table can shrink to a narrow screen. */
+  overflow-wrap: anywhere;
 }
 
 .o-prose table.tableblock th {
