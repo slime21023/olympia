@@ -189,12 +189,8 @@ Full-text search uses the Pagefind index, which only exists after `bun run build
 == Customization
 
 `Site name and version`:: The `siteTitle` and `version` props of `DocsLayout`.
+`GitHub button`:: The `githubUrl` prop of `DocsLayout` sets the repository link in the header. Leave it out to hide the button.
 `Sidebar group order`:: Pass your own list as the second argument: `buildDocsNavigation(entries, ['Getting Started', 'Guides', 'API'])`. Listed groups come first in that order; any others follow alphabetically.
 `Colors and sizes`:: The design tokens are CSS variables in `packages/olympia-theme/src/styles/tokens.css`, such as `--o-primary`, `--o-surface`, and `--sidebar-width`. Override them in your own stylesheet, or edit the file in your copy of the theme.
 `Extra right-rail content`:: `DocsLayout` has a named slot, `rail`.
 `Components`:: The pieces are grouped by feature in `packages/olympia-theme/src/components/` (`layout`, `navigation`, `content`, `search`). You own your copy of the theme, so edit them directly.
-
-[WARNING]
-====
-The GitHub link in the header always points to `https://github.com`, and `DocsLayout` has no prop to change it. Edit `components/layout/Header.astro` in your copy to set your repository URL.
-====

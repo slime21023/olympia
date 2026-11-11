@@ -143,6 +143,14 @@ pnpm install
     expect(result.meta.order).toBe(99);
   });
 
+  test('attribute values keep a literal ampersand instead of an HTML entity', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n:category: Authoring & AsciiDoc\n:description: Q & A\n',
+    );
+    expect(result.meta.category).toBe('Authoring & AsciiDoc');
+    expect(result.meta.description).toBe('Q & A');
+  });
+
   test('renders inline and block math with KaTeX at build time', async () => {
     const result = await compileAsciiDoc(
       '= T\n\nstem:[x^2] and latexmath:[\\frac{a}{b}]\n\n[latexmath]\n++++\n\\int_0^1 x\\,dx\n++++\n',

@@ -1,10 +1,16 @@
 import { DEFAULT_CATEGORY, DEFAULT_ORDER, type AsciiDocMeta, type BadgeVariant } from '../types.ts';
+import { unescapeHtml } from '../utils/html.ts';
 
-/** Keeps only string/number document attributes, stringified. */
+/**
+ * Keeps only string/number document attributes, stringified.
+ * Asciidoctor HTML-escapes attribute values (`&` becomes `&amp;`), so strings are decoded back.
+ */
 export function collectStringAttributes(raw: Record<string, unknown>): Record<string, string> {
   const attributes: Record<string, string> = {};
   for (const [key, value] of Object.entries(raw)) {
-    if (typeof value === 'string' || typeof value === 'number') {
+    if (typeof value === 'string') {
+      attributes[key] = unescapeHtml(value);
+    } else if (typeof value === 'number') {
       attributes[key] = String(value);
     }
   }

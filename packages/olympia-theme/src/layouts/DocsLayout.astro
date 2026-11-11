@@ -35,6 +35,8 @@ export interface Props {
   nextPage?: NavItem | null;
   siteTitle?: string;
   version?: string;
+  /** Repository URL for the header's GitHub button; the button is hidden when omitted. */
+  githubUrl?: string;
 }
 
 const {
@@ -52,6 +54,7 @@ const {
   nextPage = null,
   siteTitle = 'Olympia',
   version = 'v0.1.0',
+  githubUrl,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -80,7 +83,7 @@ const currentPath = Astro.url.pathname;
     />
   </head>
   <body>
-    <Header siteTitle={siteTitle} version={version} />
+    <Header siteTitle={siteTitle} version={version} githubUrl={githubUrl} />
 
     <MobileDrawer siteTitle={siteTitle} navGroups={navGroups} currentPath={currentPath} />
 

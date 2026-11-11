@@ -265,6 +265,8 @@ See `apps/docs/src/content/docs/authoring/asciidoc-syntax.adoc` for full example
 ## Customization
 
 - **Site name and version**: the `siteTitle` and `version` props of `DocsLayout`.
+- **GitHub button**: the `githubUrl` prop of `DocsLayout` sets the repository link in the header.
+  Leave it out to hide the button.
 - **Sidebar group order**: pass your own list as the second argument,
   `buildDocsNavigation(entries, ['Getting Started', 'Guides', 'API'])`. Listed groups come first in that
   order; any others follow alphabetically.
@@ -274,10 +276,6 @@ See `apps/docs/src/content/docs/authoring/asciidoc-syntax.adoc` for full example
 - **Extra right-rail content**: `DocsLayout` has a named slot, `<Fragment slot="rail">…</Fragment>`.
 - **Components**: the pieces are grouped by feature in `packages/olympia-theme/src/components/`
   (`layout`, `navigation`, `content`, `search`). You own your copy of the theme, so edit them directly.
-
-Known limits: the GitHub link in the header always points to `https://github.com`, and
-`DocsLayout` does not expose a prop to change it. Edit `components/layout/Header.astro` in your copy
-to set your repository URL.
 
 ## Development
 

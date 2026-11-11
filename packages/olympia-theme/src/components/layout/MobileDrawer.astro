@@ -90,6 +90,8 @@ const { siteTitle, navGroups, currentPath } = Astro.props;
 
   .o-drawer__sheet {
     display: grid;
+    /* Without this the implicit auto column grows to the longest nowrap nav link and overflows the sheet. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto 1fr;
     height: 100svh;
     background-color: var(--o-surface-raised);
