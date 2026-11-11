@@ -195,3 +195,20 @@ Full-text search uses the Pagefind index, which only exists after `bun run build
 `Extra right-rail content`:: `DocsLayout` has a named slot, `rail`.
 `Hosting under a sub-path`:: Set Astro's `base` (for example `base: '/docs'`). Sidebar and pagination links, the header logo link, search, relative images, and root-relative links such as `link:/guide/start[Guide]` all get the base path. Write authored links without it.
 `Components`:: The pieces are grouped by feature in `packages/olympia-theme/src/components/` (`layout`, `navigation`, `content`, `search`). You own your copy of the theme, so edit them directly.
+
+== Deploy to GitHub Pages
+
+Copy `.github/workflows/deploy.yml` from the Olympia repository, then in your repository open *Settings → Pages* and set *Source* to *GitHub Actions*. A project site is served from `https://<user>.github.io/<repo>/`, so read the site URL and base path from the environment in `astro.config.mjs`:
+
+[source,javascript,filename="apps/site/astro.config.mjs"]
+----
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  site: process.env.SITE_URL ?? 'https://example.com',
+  base: process.env.BASE_PATH ?? '/',
+  output: 'static',
+});
+----
+
+The workflow sets `SITE_URL` to `https://<user>.github.io` and `BASE_PATH` to `/<repo>`. Use `base: '/'` for a custom domain. Add a `src/pages/404.astro` that renders `DocsLayout` with `indexable={false}` so unknown URLs get a styled page, and a `public/.nojekyll` file if you deploy from a branch instead of Actions.

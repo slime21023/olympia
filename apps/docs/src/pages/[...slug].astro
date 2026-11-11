@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { buildDocsNavigation, getAdjacentPages } from '@olympia/theme';
+import { buildDocsNavigation, getAdjacentPages, withBase } from '@olympia/theme';
 import DocsLayout from '@olympia/theme/layouts/DocsLayout.astro';
 
 export async function getStaticPaths() {
@@ -44,6 +44,7 @@ const { Content } = await render(entry);
   siteTitle="Olympia"
   version="v0.2.0"
   githubUrl="https://github.com/slime21023/olympia"
+  favicon={withBase('/favicon.svg')}
 >
   <Content />
 </DocsLayout>

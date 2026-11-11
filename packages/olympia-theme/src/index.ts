@@ -1,6 +1,7 @@
 export { asciidocLoader, type AsciiDocLoaderOptions } from './loader/asciidoc-loader.ts';
 export { compileAsciiDoc, type CompiledAsciiDoc, type CompileOptions } from './loader/converter.ts';
 export { buildDocsNavigation, getAdjacentPages, DEFAULT_CATEGORY_ORDER } from './navigation.ts';
+export { withBase } from './utils/base.ts';
 export {
   BADGE_VARIANTS,
   DEFAULT_CATEGORY,

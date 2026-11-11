@@ -318,6 +318,23 @@ styles/                    tokens.css and prose.css (split into styles/content/*
 navigation.ts, types.ts    sidebar and pagination logic, shared types
 ```
 
+## Deploy to GitHub Pages
+
+This repository deploys its own docs with `.github/workflows/deploy.yml`. On every push to `main` it runs the
+checks, builds the site with Pagefind, and publishes `apps/docs/dist`.
+
+1. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. Push to `main` (or run the workflow manually). The site appears at
+   `https://<user>.github.io/<repo>/`.
+
+A project site is served from a sub-path, so `apps/docs/astro.config.mjs` reads `SITE_URL` and `BASE_PATH`
+from the environment (the workflow sets them to `https://<user>.github.io` and `/<repo>`). Locally both fall
+back to a site served from the root. For your own site, copy the workflow and set `site` and `base` in your
+Astro config the same way. Use `base: '/'` for a custom domain or a `<user>.github.io` repository.
+
+The docs app also ships a `404.astro` page (GitHub Pages serves it for unknown URLs), a favicon, and a
+`public/.nojekyll` file so branch-based Pages deployments keep the `_astro` folder.
+
 ## License
 
 [MIT](./LICENSE) © 2026 KevinChueh

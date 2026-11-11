@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import { buildDocsNavigation, withBase } from '@olympia/theme';
+import DocsLayout from '@olympia/theme/layouts/DocsLayout.astro';
+
+const entries = await getCollection('docs');
+const { navGroups, flatItems } = buildDocsNavigation(entries);
+---
+
+<DocsLayout
+  title="Page not found"
+  description="The page you are looking for does not exist or has moved."
+  category="404"
+  navGroups={navGroups}
+  searchDocs={flatItems}
+  siteTitle="Olympia"
+  version="v0.2.0"
+  githubUrl="https://github.com/slime21023/olympia"
+  favicon={withBase('/favicon.svg')}
+  indexable={false}
+>
+  <p>
+    Check the address, search the docs with <kbd>Ctrl</kbd> + <kbd>K</kbd>, or
+    <a href={withBase('/')}>go back to the home page</a>.
+  </p>
+</DocsLayout>

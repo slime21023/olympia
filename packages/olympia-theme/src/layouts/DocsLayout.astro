@@ -37,6 +37,10 @@ export interface Props {
   version?: string;
   /** Repository URL for the header's GitHub button; the button is hidden when omitted. */
   githubUrl?: string;
+  /** Icon URL for `<link rel="icon">`. Include the base path, e.g. `${import.meta.env.BASE_URL}favicon.svg`. */
+  favicon?: string;
+  /** Set to `false` for pages that should not be searchable or indexed by search engines (e.g. a 404 page). */
+  indexable?: boolean;
 }
 
 const {
@@ -55,9 +59,13 @@ const {
   siteTitle = 'Olympia',
   version = 'v0.1.0',
   githubUrl,
+  favicon,
+  indexable = true,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+// Needs `site` in the Astro config; the pathname already includes the `base` path.
+const canonicalUrl = Astro.site ? new URL(currentPath, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -75,6 +83,14 @@ const currentPath = Astro.url.pathname;
     </script>
     <title>{title} — {siteTitle}</title>
     {description && <meta name="description" content={description} />}
+    {favicon && <link rel="icon" href={favicon} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    {!indexable && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -97,7 +113,7 @@ const currentPath = Astro.url.pathname;
       </aside>
 
       <!-- Center Column: Documentation Core (Flexible, max 768px) -->
-      <main class="o-workspace__main" data-pagefind-body>
+      <main class="o-workspace__main" data-pagefind-body={indexable ? '' : undefined}>
         <!-- Mobile / Tablet Breadcrumb & On-page TOC disclosure -->
         <PageSubbar category={category} title={title} headings={headings} />
 

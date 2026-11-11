@@ -1,7 +1,10 @@
 import { defineConfig } from 'astro/config';
 
+// GitHub Pages project sites are served from a sub-path, so the deploy workflow sets
+// SITE_URL=https://<user>.github.io and BASE_PATH=/<repo>. Locally both fall back to a root-served site.
 export default defineConfig({
-  site: 'https://olympia.docs.local',
+  site: process.env.SITE_URL ?? 'https://olympia.docs.local',
+  base: process.env.BASE_PATH ?? '/',
   output: 'static',
   vite: {
     build: {
