@@ -142,4 +142,11 @@ const { siteTitle = 'Olympia', version = 'v0.1.0', githubUrl } = Astro.props;
       margin-left: auto;
     }
   }
+
+  /* At 375px the header row is wider than the viewport and adds a page-wide horizontal scrollbar. */
+  @media (max-width: 479px) {
+    .o-header__version {
+      display: none;
+    }
+  }
 </style>

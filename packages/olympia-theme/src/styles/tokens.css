@@ -147,9 +147,9 @@
   scrollbar-width: thin;
 }
 
-/* Shiki Dual Theme Synchronization */
+/* Shiki Dual Theme Synchronization. Callout badges (`.o-conum`) keep their own colors. */
 .shiki,
-.shiki span {
+.shiki span:not(.o-conum) {
   color: light-dark(var(--shiki-light), var(--shiki-dark));
   background-color: transparent !important;
 }

@@ -1,0 +1,172 @@
+= Advanced Features
+:description: Math, images, code callouts, checklists, menus, quotes, footnotes, diagrams and includes.
+:category: Authoring & AsciiDoc
+:order: 2
+:badge: NEW
+:badge-variant: tertiary
+
+Beyond the basics in link:/authoring/asciidoc-syntax[AsciiDoc Syntax & Formatting], Olympia renders math, responsive images, code callouts, task lists, menu paths, quotes, footnotes, diagrams, and included files. Each section shows the result first and the AsciiDoc markup after it.
+
+== Math
+
+Math is rendered to static HTML at build time with KaTeX, so pages carry no math JavaScript. The `+stem:[]+` macro and `+[stem]+` block use AsciiMath; the `+latexmath:[]+` macro and `+[latexmath]+` block use LaTeX.
+
+Inline AsciiMath: stem:[sqrt(x^2+y^2)]. Inline LaTeX: latexmath:[\frac{a}{b}].
+
+[stem]
+++++
+sum_(i=1)^n i = (n(n+1))/2
+++++
+
+[latexmath]
+++++
+\int_0^1 x^2\,dx = \frac{1}{3}
+++++
+
+[source,asciidoc]
+------
+Inline AsciiMath: stem:[sqrt(x^2+y^2)]. Inline LaTeX: latexmath:[\frac{a}{b}].
+
+[stem]
+++++
+sum_(i=1)^n i = (n(n+1))/2
+++++
+
+[latexmath]
+++++
+\int_0^1 x^2\,dx = \frac{1}{3}
+++++
+------
+
+== Images
+
+Images scale down to the reading column. Relative paths resolve against the site root, so keep image files in the site's `public/` folder. Set `:imagesdir:` in a document to use another base path.
+
+.Three-column layout
+image::images/layout-overview.svg[Three-column layout overview]
+
+A fixed width: image::images/layout-overview.svg[Small layout overview,240]
+
+An inline image image:images/layout-overview.svg[icon,48] sits in the text line.
+
+[source,asciidoc]
+------
+.Three-column layout
+image::images/layout-overview.svg[Three-column layout overview]
+
+image::images/layout-overview.svg[Small layout overview,240]
+
+image:images/layout-overview.svg[icon,48]
+------
+
+== Code Callouts
+
+Number markers at the end of a line become badges in the highlighted code. The numbered list below the block explains each one, and the copy button copies the code without the markers.
+
+[source,typescript]
+----
+const app = createApp(); // <1>
+app.use(router); // <2>
+----
+<1> Create the application instance.
+<2> Register the router.
+
+[source,asciidoc]
+------
+[source,typescript]
+----
+const app = createApp(); // \<1>
+app.use(router); // \<2>
+----
+<1> Create the application instance.
+<2> Register the router.
+------
+
+== Checklists and Menus
+
+* [x] Done
+* [ ] To do
+
+Choose menu:File[Export > PDF], then press btn:[Save].
+
+[source,asciidoc]
+------
+* [x] Done
+* [ ] To do
+
+Choose menu:File[Export > PDF], then press btn:[Save].
+------
+
+== Quotes, Sidebars and Literal Blocks
+
+[quote, Ada Lovelace, Notes]
+____
+The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.
+____
+
+.Good to know
+****
+A sidebar sets related content apart from the main flow of the page.
+****
+
+....
+A literal block keeps its line breaks
+    and indentation exactly as written.
+....
+
+A footnote marks a side remark.footnote:[Footnotes collect at the bottom of the page.]
+
+[horizontal]
+Term:: A horizontal description list puts each term beside its description.
+Other:: Use it for short definitions.
+
+'''
+
+[source,asciidoc]
+------
+[quote, Ada Lovelace, Notes]
+____
+The Analytical Engine weaves algebraical patterns.
+____
+
+.Good to know
+****
+A sidebar sets related content apart.
+****
+
+....
+A literal block keeps its line breaks.
+....
+
+A footnote marks a side remark.footnote:[Footnotes collect at the bottom of the page.]
+
+[horizontal]
+Term:: A horizontal description list.
+
+'''
+------
+
+== Diagrams
+
+Mermaid diagrams are drawn in the browser, follow the light or dark color scheme, and load their code only on pages that contain one.
+
+[mermaid]
+----
+flowchart LR
+  A[.adoc] --> B[Loader] --> C[Page]
+----
+
+[source,asciidoc]
+------
+[mermaid]
+----
+flowchart LR
+  A[.adoc] --> B[Loader] --> C[Page]
+----
+------
+
+== Includes
+
+Use `include::` with a path relative to the current file. Files and folders whose name starts with `_` are partials: they are never published as pages, and editing one reloads the pages in dev. Included files must sit in the page's folder or below it.
+
+include::_partials/include-demo.adoc[]

@@ -1,6 +1,6 @@
 {
   "name": "@olympia/theme",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Olympia documentation theme for Astro with native AsciiDoc support and lightweight custom elements",
   "type": "module",
   "exports": {

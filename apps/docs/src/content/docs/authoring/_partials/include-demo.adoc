@@ -1,0 +1,1 @@
+This paragraph lives in `_partials/include-demo.adoc` and is pulled in with `include::`.
