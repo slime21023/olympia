@@ -23,3 +23,9 @@ export const COPY_ICON = `<svg class="o-copy-btn__icon o-copy-btn__icon--copy" v
 export const CHECK_ICON = `<svg class="o-copy-btn__icon o-copy-btn__icon--check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m3.5 8.5 3 3 6-6.5"/>
                 </svg>`;
+
+export const CHECKBOX_ICON = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/></svg>`;
+
+export const CHECKBOX_CHECKED_ICON = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m5.5 8.2 1.8 1.8 3.4-3.6"/></svg>`;
+
+export const MENU_CARET_ICON = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m6 4 4 4-4 4"/></svg>`;

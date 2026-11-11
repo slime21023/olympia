@@ -159,4 +159,29 @@ pnpm install
     const result = await compileAsciiDoc('= T\n:imagesdir: assets\n\nimage::foo.png[Foo]\n');
     expect(result.html).toContain('src="assets/foo.png"');
   });
+
+  test('renders task lists with inline SVG checkboxes instead of an icon font', async () => {
+    const result = await compileAsciiDoc('= T\n\n* [x] done\n* [ ] open\n* plain\n');
+    expect(result.html).toContain('data-checked="true"');
+    expect(result.html).toContain('data-checked="false"');
+    expect(result.html).not.toContain('fa-');
+  });
+
+  test('renders menu paths with an inline SVG caret', async () => {
+    const result = await compileAsciiDoc('= T\n\nmenu:View[Zoom > Reset]\n');
+    expect(result.html).toContain('<b class="submenu">Zoom</b>');
+    expect(result.html).toContain('o-menu-caret');
+    expect(result.html).not.toContain('fa-');
+  });
+
+  test('renders code callouts as badges and copies the code without markers', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n\n[source,typescript]\n----\nconst a = 1; // <.>\nconst b = 2; // <.>\n----\n<.> one\n<.> two\n',
+    );
+    expect(result.html).toContain('class="o-conum" data-value="1"');
+    expect(result.html).toContain('class="o-conum" data-value="2"');
+    const copied = /data-code="([^"]*)"/.exec(result.html)?.[1] ?? '';
+    expect(decodeURIComponent(copied)).toBe('const a = 1;\nconst b = 2;');
+    expect(result.html).toContain('<div class="colist arabic">\n<ol>');
+  });
 });

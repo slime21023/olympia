@@ -38,6 +38,36 @@ export function resolveLanguage(highlighter: Highlighter, lang: string): string 
   return highlighter.getLoadedLanguages().includes(lang) ? lang : 'plaintext';
 }
 
-export function highlightCode(highlighter: Highlighter, code: string, lang: string): string {
-  return highlighter.codeToHtml(code, { lang, themes: SHIKI_THEMES, defaultColor: false });
+export function highlightCode(
+  highlighter: Highlighter,
+  code: string,
+  lang: string,
+  /** 1-based line number to callout numbers, appended to that line as numbered badges. */
+  callouts: Map<number, number[]> = new Map(),
+): string {
+  return highlighter.codeToHtml(code, {
+    lang,
+    themes: SHIKI_THEMES,
+    defaultColor: false,
+    transformers:
+      callouts.size > 0
+        ? [
+            {
+              line(node, line) {
+                for (const number of callouts.get(line) ?? []) {
+                  node.children.push(
+                    { type: 'text', value: ' ' },
+                    {
+                      type: 'element',
+                      tagName: 'span',
+                      properties: { class: 'o-conum', 'data-value': String(number) },
+                      children: [{ type: 'text', value: String(number) }],
+                    },
+                  );
+                }
+              },
+            },
+          ]
+        : [],
+  });
 }

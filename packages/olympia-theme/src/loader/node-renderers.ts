@@ -1,8 +1,16 @@
-import type { AbstractBlock, Block, Inline, Section } from '@asciidoctor/core';
+import type { AbstractBlock, Block, Inline, List, ListItem, Section } from '@asciidoctor/core';
 import type { Highlighter } from 'shiki';
-import { CHECK_ICON, COPY_ICON, getCalloutIcon } from '../icons.ts';
+import {
+  CHECK_ICON,
+  CHECKBOX_CHECKED_ICON,
+  CHECKBOX_ICON,
+  COPY_ICON,
+  getCalloutIcon,
+  MENU_CARET_ICON,
+} from '../icons.ts';
 import type { HeadingItem } from '../types.ts';
 import { escapeHtml, htmlToPlainText, unescapeHtml } from '../utils/html.ts';
+import { extractCallouts } from './callouts.ts';
 import { highlightCode, resolveLanguage } from './highlighter.ts';
 import { renderMath, type MathNotation } from './math.ts';
 
@@ -86,16 +94,21 @@ export function renderListing(node: Block, ctx: RenderContext): string {
   const method = node.getAttribute('method') || '';
   const endpoint = node.getAttribute('endpoint') || '';
   const rawCode = unescapeHtml(String(node.getSource() || ''));
+  // Callout markers are shown as badges, so the highlighted and copied code excludes them.
+  const { code, callouts } = extractCallouts(rawCode);
+  // Converting the block registers its callouts with Asciidoctor, which the following callout list
+  // needs to resolve its numbers. The output is not used; the Shiki output above replaces it.
+  if (callouts.size > 0) node.getContent();
 
   const lang = resolveLanguage(ctx.highlighter, rawLang);
-  const highlightedHtml = highlightCode(ctx.highlighter, rawCode, lang);
+  const highlightedHtml = highlightCode(ctx.highlighter, code, lang, callouts);
 
   return `<o-code-block class="o-code-block" data-lang="${escapeHtml(rawLang)}">
           <div class="o-code-block__header">
             <div class="o-code-block__meta">
               ${renderCodeHeaderMeta({ method, endpoint, title, lang: rawLang })}
             </div>
-            ${renderCopyButton(rawCode)}
+            ${renderCopyButton(code)}
           </div>
           <div class="o-code-block__body">${highlightedHtml}</div>
         </o-code-block>`;
@@ -139,4 +152,37 @@ export function renderStemBlock(node: Block): string {
   const title = node.getTitle();
   const titleHtml = title ? `<div class="title">${title}</div>` : '';
   return `<div class="o-math-block">${titleHtml}${renderMath(node.getSource(), node.getStyle() as MathNotation, true)}</div>`;
+}
+
+function renderCheckbox(item: ListItem): string {
+  if (item.getAttribute('checkbox') === undefined) return '';
+  const checked = item.getAttribute('checked') !== undefined;
+  const icon = checked ? CHECKBOX_CHECKED_ICON : CHECKBOX_ICON;
+  return `<span class="o-checkbox" data-checked="${checked}">${icon}</span><span class="sr-only">${checked ? 'Done: ' : 'To do: '}</span>`;
+}
+
+/** `* [x]` / `* [ ]` task lists, drawn with inline SVG instead of an icon font. */
+export function renderChecklist(node: List): string {
+  const id = node.getId() ? ` id="${node.getId()}"` : '';
+  const role = node.getRole() ? ` ${node.getRole()}` : '';
+  const title = node.getTitle();
+  const titleHtml = title ? `<div class="title">${title}</div>` : '';
+  const items = node.getItems().map((item) => {
+    const blocks = item.hasBlocks() ? (item.getContent() ?? '') : '';
+    return `<li><p>${renderCheckbox(item)}${item.getText()}</p>${blocks}</li>`;
+  });
+  return `<div${id} class="ulist checklist${role}">${titleHtml}<ul class="checklist">${items.join('')}</ul></div>`;
+}
+
+/** `menu:File[Save As...]` rendered with an inline SVG caret instead of an icon font. */
+export function renderMenu(node: Inline): string {
+  const menu = String(node.getAttribute('menu'));
+  const submenus = (node.getAttribute('submenus') ?? []) as string[];
+  const menuitem = node.getAttribute('menuitem') as string | undefined;
+  if (menuitem === undefined && submenus.length === 0) {
+    return `<b class="menuref">${menu}</b>`;
+  }
+  const caret = `<span class="o-menu-caret" aria-hidden="true">${MENU_CARET_ICON}</span>`;
+  const submenuHtml = submenus.map((submenu) => `<b class="submenu">${submenu}</b>${caret}`);
+  return `<span class="menuseq"><b class="menu">${menu}</b>${caret}${submenuHtml.join('')}<b class="menuitem">${menuitem}</b></span>`;
 }

@@ -122,3 +122,97 @@
   background-color: var(--o-surface-overlay);
   color: var(--o-text);
 }
+
+/* Code callouts: badges inside highlighted code and the matching numbered list */
+.o-conum,
+.o-prose b.conum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 0.5rem;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--o-primary) 18%, transparent);
+  color: var(--o-primary-text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+  vertical-align: 1px;
+}
+
+.o-prose .colist ol {
+  list-style: none;
+  counter-reset: colist;
+  padding-left: 0;
+  margin: 0.75rem 0 1.75rem;
+}
+
+.o-prose .colist li {
+  counter-increment: colist;
+  display: flex;
+  gap: 0.625rem;
+  align-items: baseline;
+}
+
+.o-prose .colist li::before {
+  content: counter(colist);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--o-primary) 18%, transparent);
+  color: var(--o-primary-text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.o-prose .colist li > p {
+  margin: 0;
+}
+
+/* Task lists */
+.o-prose ul.checklist {
+  list-style: none;
+  padding-left: 0.25rem;
+}
+
+.o-checkbox {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  margin-right: 0.5rem;
+  vertical-align: -3px;
+  color: var(--o-text-muted);
+}
+
+.o-checkbox[data-checked='true'] {
+  color: var(--o-secondary);
+}
+
+.o-checkbox svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* `menu:[]` macro caret */
+.o-menu-caret {
+  display: inline-flex;
+  margin: 0 0.25rem;
+  vertical-align: -2px;
+  color: var(--o-text-muted);
+}
+
+.o-menu-caret svg {
+  width: 12px;
+  height: 12px;
+}

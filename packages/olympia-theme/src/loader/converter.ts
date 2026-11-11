@@ -3,6 +3,7 @@ import createAsciidoctor, {
   type Asciidoctor,
   type Block,
   type Inline,
+  type List,
   type Section,
 } from '@asciidoctor/core';
 import type { AsciiDocMeta, HeadingItem } from '../types.ts';
@@ -12,9 +13,11 @@ import { getOlympiaHighlighter } from './highlighter.ts';
 import { collectStringAttributes, resolveMeta } from './metadata.ts';
 import {
   renderAdmonition,
+  renderChecklist,
   renderInlineMath,
   renderKbd,
   renderListing,
+  renderMenu,
   renderSection,
   renderStemBlock,
   renderTabs,
@@ -32,7 +35,6 @@ const ASCIIDOC_ATTRIBUTES = {
   // Relative image targets resolve to the site root, so images live in the site's `public/` folder.
   // A document can still override this with `:imagesdir:`.
   imagesdir: '/@',
-  icons: 'font',
   sectanchors: '',
   'source-highlighter': 'none',
 };
@@ -64,6 +66,12 @@ class OlympiaHtml5Converter {
         return renderTabs(node as Block) ?? this.base.convert(node, transform, opts);
       case 'inline_kbd':
         return renderKbd(node as Inline);
+      case 'inline_menu':
+        return renderMenu(node as Inline);
+      case 'ulist':
+        return (node as List).isOption('checklist')
+          ? renderChecklist(node as List)
+          : this.base.convert(node, transform, opts);
       case 'stem':
         return renderStemBlock(node as Block);
       case 'inline_quoted': {
