@@ -27,8 +27,8 @@ class OlympiaTabs extends HTMLElement {
       tab.tabIndex = index === 0 ? 0 : -1;
       tab.addEventListener('click', () => selectTab(index));
       tab.addEventListener('keydown', (event) => {
-        const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
-        if (step === undefined) return;
+        const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+        if (step === 0) return;
         event.preventDefault();
         selectTab((index + step + tabs.length) % tabs.length, true);
       });
