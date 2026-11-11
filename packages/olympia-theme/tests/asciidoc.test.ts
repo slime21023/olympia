@@ -1,5 +1,13 @@
-import { describe, expect, test } from 'bun:test';
+import { afterAll, describe, expect, test } from 'bun:test';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { compileAsciiDoc } from '../src/loader/converter.ts';
+
+const tempDirs: string[] = [];
+afterAll(async () => {
+  await Promise.all(tempDirs.map((dir) => rm(dir, { recursive: true, force: true })));
+});
 
 describe('Olympia AsciiDoc Converter', () => {
   test('parses document title, attributes, and extracts section headings for TOC', async () => {
@@ -197,5 +205,16 @@ pnpm install
       '= T\n\n[source,mermaid]\n----\ngraph TB; E-->F\n----\n\n[mermaid]\n....\ngraph LR; C-->D\n....\n',
     );
     expect(result.html.match(/<o-mermaid /g)).toHaveLength(2);
+  });
+
+  test('resolves include:: relative to the given baseDir', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'olympia-'));
+    tempDirs.push(dir);
+    await mkdir(join(dir, '_partials'));
+    await writeFile(join(dir, '_partials', 'note.adoc'), 'Included text.\n');
+    const result = await compileAsciiDoc('= T\n\ninclude::_partials/note.adoc[]\n', {
+      baseDir: dir,
+    });
+    expect(result.html).toContain('Included text.');
   });
 });

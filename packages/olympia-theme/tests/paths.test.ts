@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { join } from 'node:path';
-import { isInsideDirectory, normalizeEntryId } from '../src/loader/paths.ts';
+import { isInsideDirectory, isPartialPath, normalizeEntryId } from '../src/loader/paths.ts';
 
 describe('isInsideDirectory', () => {
   test('rejects a sibling directory sharing the name prefix', () => {
@@ -22,5 +22,16 @@ describe('normalizeEntryId', () => {
 
   test('strips the extension and uses forward slashes', () => {
     expect(normalizeEntryId(base, join(base, 'a', 'b.asciidoc'))).toBe('a/b');
+  });
+});
+
+describe('isPartialPath', () => {
+  test('treats files and folders starting with an underscore as partials', () => {
+    expect(isPartialPath(join('guide', '_partials', 'x.adoc'))).toBe(true);
+    expect(isPartialPath('_x.adoc')).toBe(true);
+  });
+
+  test('regular pages are not partials', () => {
+    expect(isPartialPath(join('guide', 'x.adoc'))).toBe(false);
   });
 });

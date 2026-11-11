@@ -16,6 +16,13 @@ export function isInsideDirectory(dir: string, path: string): boolean {
   return rel !== '' && !rel.startsWith('..') && !isAbsolute(rel);
 }
 
+/** True when any path segment starts with `_`, marking a partial (include-only) file or folder. */
+export function isPartialPath(relativePath: string): boolean {
+  return toPosixPath(relativePath)
+    .split('/')
+    .some((segment) => segment.startsWith('_'));
+}
+
 /** `guide/index.adoc` -> `guide`, `index.adoc` -> `index`, `a/b.asciidoc` -> `a/b`. */
 export function normalizeEntryId(baseDir: string, filePath: string): string {
   const withoutExt = toPosixPath(relative(baseDir, filePath)).replace(ASCIIDOC_EXTENSION, '');

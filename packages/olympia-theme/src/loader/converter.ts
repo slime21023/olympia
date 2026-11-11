@@ -31,6 +31,13 @@ export interface CompiledAsciiDoc {
   meta: AsciiDocMeta;
 }
 
+export interface CompileOptions {
+  /** Title used when the document has none. Defaults to `Untitled`. */
+  fallbackTitle?: string;
+  /** Directory that `include::` targets resolve against; includes cannot escape it. */
+  baseDir?: string;
+}
+
 const ASCIIDOC_ATTRIBUTES = {
   experimental: '',
   // Relative image targets resolve to the site root, so images live in the site's `public/` folder.
@@ -103,8 +110,9 @@ class OlympiaHtml5Converter {
  */
 export async function compileAsciiDoc(
   rawSource: string,
-  fallbackTitle = 'Untitled',
+  options: CompileOptions = {},
 ): Promise<CompiledAsciiDoc> {
+  const { fallbackTitle = 'Untitled', baseDir } = options;
   const highlighter = await getOlympiaHighlighter();
   const { content, frontmatter } = extractFrontmatter(rawSource);
   const ctx: RenderContext = { highlighter, headings: [] };
@@ -114,6 +122,7 @@ export async function compileAsciiDoc(
     standalone: false,
     converter: new OlympiaHtml5Converter(ctx),
     attributes: ASCIIDOC_ATTRIBUTES,
+    ...(baseDir ? { base_dir: baseDir } : {}),
   });
 
   const attributes = collectStringAttributes(doc.getAttributes());

@@ -1,9 +1,15 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { basename, extname, join, relative, resolve } from 'node:path';
+import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Loader } from 'astro/loaders';
 import { compileAsciiDoc } from './converter.ts';
-import { isAsciiDocFile, isInsideDirectory, normalizeEntryId, toPosixPath } from './paths.ts';
+import {
+  isAsciiDocFile,
+  isInsideDirectory,
+  isPartialPath,
+  normalizeEntryId,
+  toPosixPath,
+} from './paths.ts';
 
 export interface AsciiDocLoaderOptions {
   /**
@@ -12,7 +18,10 @@ export interface AsciiDocLoaderOptions {
   base: string;
 }
 
-/** Recursively lists AsciiDoc files; a missing directory yields no files. */
+/**
+ * Recursively lists AsciiDoc pages; a missing directory yields no files.
+ * Files and folders whose name starts with `_` are partials (include targets), not pages.
+ */
 async function findAsciiDocFiles(dir: string): Promise<string[]> {
   let entries;
   try {
@@ -22,6 +31,7 @@ async function findAsciiDocFiles(dir: string): Promise<string[]> {
   }
   const nested = await Promise.all(
     entries.map(async (entry) => {
+      if (entry.name.startsWith('_')) return [];
       const fullPath = join(dir, entry.name);
       if (entry.isDirectory()) return findAsciiDocFiles(fullPath);
       return entry.isFile() && isAsciiDocFile(entry.name) ? [fullPath] : [];
@@ -44,7 +54,10 @@ export function asciidocLoader(options: AsciiDocLoaderOptions): Loader {
         const id = normalizeEntryId(baseDir, absolutePath);
         const filePath = toPosixPath(relative(rootDir, absolutePath));
         const raw = await readFile(absolutePath, 'utf-8');
-        const compiled = await compileAsciiDoc(raw, basename(absolutePath, extname(absolutePath)));
+        const compiled = await compileAsciiDoc(raw, {
+          fallbackTitle: basename(absolutePath, extname(absolutePath)),
+          baseDir: dirname(absolutePath),
+        });
 
         const data = await parseData({
           id,
@@ -57,7 +70,8 @@ export function asciidocLoader(options: AsciiDocLoaderOptions): Loader {
           data,
           body: raw,
           filePath,
-          digest: generateDigest(raw),
+          // Includes change the output without changing the source, so the digest covers the HTML too.
+          digest: generateDigest(raw + compiled.html),
           rendered: {
             html: compiled.html,
             metadata: {
@@ -68,31 +82,53 @@ export function asciidocLoader(options: AsciiDocLoaderOptions): Loader {
         });
       }
 
-      /** Resolves a watcher path to an absolute AsciiDoc path under `baseDir`, or `null` to ignore it. */
-      function toTrackedPath(changedPath: string): string | null {
-        if (!isAsciiDocFile(changedPath)) return null;
+      /** Compiles every page; returns how many were found. */
+      async function syncAll(): Promise<number> {
+        const files = await findAsciiDocFiles(baseDir);
+        await Promise.all(files.map(syncFile));
+        return files.length;
+      }
+
+      /**
+       * `page`: an AsciiDoc page. `dependency`: any other file under `baseDir` (partials, included
+       * code), which can change any page that includes it. `null`: outside `baseDir`, ignored.
+       */
+      function classifyChange(changedPath: string): 'page' | 'dependency' | null {
         const absolutePath = resolve(changedPath);
-        return isInsideDirectory(baseDir, absolutePath) ? absolutePath : null;
+        if (!isInsideDirectory(baseDir, absolutePath)) return null;
+        const isPage =
+          isAsciiDocFile(absolutePath) && !isPartialPath(relative(baseDir, absolutePath));
+        return isPage ? 'page' : 'dependency';
       }
 
       store.clear();
-      const files = await findAsciiDocFiles(baseDir);
-      logger.info(`Loaded ${files.length} AsciiDoc files from ${options.base}`);
-      await Promise.all(files.map(syncFile));
+      const pageCount = await syncAll();
+      logger.info(`Loaded ${pageCount} AsciiDoc files from ${options.base}`);
 
       if (watcher) {
         watcher.add(baseDir);
         const handleUpdate = async (changedPath: string) => {
-          const tracked = toTrackedPath(changedPath);
-          if (!tracked) return;
-          logger.info(`Reloading AsciiDoc file: ${relative(baseDir, tracked)}`);
-          await syncFile(tracked);
+          const kind = classifyChange(changedPath);
+          if (!kind) return;
+          const absolutePath = resolve(changedPath);
+          const relativePath = toPosixPath(relative(baseDir, absolutePath));
+          if (kind === 'page') {
+            logger.info(`Reloading AsciiDoc file: ${relativePath}`);
+            await syncFile(absolutePath);
+          } else {
+            logger.info(`Reloading AsciiDoc pages after change to ${relativePath}`);
+            await syncAll();
+          }
         };
         watcher.on('change', handleUpdate);
         watcher.on('add', handleUpdate);
-        watcher.on('unlink', (removedPath: string) => {
-          const tracked = toTrackedPath(removedPath);
-          if (tracked) store.delete(normalizeEntryId(baseDir, tracked));
+        watcher.on('unlink', async (removedPath: string) => {
+          const kind = classifyChange(removedPath);
+          if (kind === 'page') {
+            store.delete(normalizeEntryId(baseDir, resolve(removedPath)));
+          } else if (kind === 'dependency') {
+            await syncAll();
+          }
         });
       }
     },
