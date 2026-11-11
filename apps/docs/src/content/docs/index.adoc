@@ -36,6 +36,9 @@ Press kbd:[Cmd+K] (or kbd:[Ctrl+K] on Windows and Linux) anywhere on the page to
 
 | **Full-Text Search & Theme Toggle**
 | Built-in Pagefind static full-text indexing paired with a native `<dialog>` command palette and a zero-FOUC dark/light color scheme switcher.
+
+| **Math, Diagrams & Rich Blocks**
+| KaTeX math rendered at build time, lazy-loaded Mermaid diagrams, responsive images, code callouts, task lists, menu paths, quotes, sidebars, and footnotes. See link:/authoring/advanced-features[Advanced Features].
 |===
 
 == Quick Start

@@ -93,7 +93,8 @@ export function renderListing(node: Block, ctx: RenderContext): string {
   const title = node.getTitle() || node.getAttribute('filename') || '';
   const method = node.getAttribute('method') || '';
   const endpoint = node.getAttribute('endpoint') || '';
-  const rawCode = unescapeHtml(String(node.getSource() || ''));
+  // `getSource()` is the raw text, not HTML-escaped; Shiki and the copy button escape/encode it themselves.
+  const rawCode = String(node.getSource() || '');
   // Callout markers are shown as badges, so the highlighted and copied code excludes them.
   const { code, callouts } = extractCallouts(rawCode);
   // Converting the block registers its callouts with Asciidoctor, which the following callout list

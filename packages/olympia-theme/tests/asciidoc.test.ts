@@ -201,6 +201,14 @@ pnpm install
     expect(result.html).toContain('<div class="colist arabic">\n<ol>');
   });
 
+  test('shows HTML entities in code blocks literally and copies them unchanged', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n\n[source,html]\n----\n<div>a &amp;&amp; b &lt;</div>\n----\n',
+    );
+    const copied = /data-code="([^"]*)"/.exec(result.html)?.[1] ?? '';
+    expect(decodeURIComponent(copied)).toBe('<div>a &amp;&amp; b &lt;</div>');
+  });
+
   test('renders [mermaid] blocks as diagram elements with escaped source', async () => {
     const result = await compileAsciiDoc('= T\n\n[mermaid]\n----\ngraph TD; A-->B\n----\n');
     expect(result.html).toContain('<o-mermaid class="o-mermaid">');

@@ -10,6 +10,8 @@ A technical documentation and API reference theme for [Astro](https://astro.buil
   name headers, HTTP method and endpoint labels, and a copy button.
 - **Callouts, tabs and keyboard shortcuts** from plain AsciiDoc (`NOTE`/`TIP`/`IMPORTANT`/`WARNING`/`CAUTION`,
   `[tabs]`, `kbd:[Ctrl+K]`).
+- **Math, diagrams and images**: `stem:[]` and `latexmath:[]` render with KaTeX at build time,
+  `[mermaid]` blocks render as lazy-loaded diagrams, and images scale to the reading column.
 - **Full-text search** with [Pagefind](https://pagefind.app) behind a `Cmd/Ctrl+K` command palette.
 - **Light and dark color scheme** with a toggle and no flash on load.
 
@@ -259,6 +261,16 @@ file also works, and its values win over header attributes.
 - **Tabs**: put `[tabs]` above an open (`--`) or example (`====`) block; each child block with a
   `.Tab Title` becomes a tab.
 - **Keyboard shortcuts**: `kbd:[Ctrl+Shift+P]`.
+- **Math**: `stem:[sqrt(x^2+y^2)]` (AsciiMath) and `latexmath:[\frac{a}{b}]` inline, or `[stem]` and
+  `[latexmath]` blocks.
+- **Images**: `image::images/diagram.svg[Alt text]`. Relative paths resolve against the site root, so
+  keep image files in the site's `public/` folder, or set `:imagesdir:` in the document.
+- **Code callouts**: end a code line with `// <1>` and add a `<1> Explanation` list after the block. To
+  show a literal `<1>`, write `\<1>`.
+- **Task lists, menus and buttons**: `* [x] Done`, `menu:File[Export > PDF]`, `btn:[Save]`.
+- **Diagrams**: a `[mermaid]` block with Mermaid source.
+- **Includes**: `include::_partials/note.adoc[]` resolves relative to the current file and must stay in the
+  page's folder or below. Files and folders starting with `_` are partials, not pages.
 
 See `apps/docs/src/content/docs/authoring/asciidoc-syntax.adoc` for full examples.
 
