@@ -24,6 +24,7 @@ export function docToResult(doc: SearchDocItem): SearchResult {
   };
 }
 
+/** Pagefind result URLs already include the site's base path, which it derives from where `pagefind.js` is served. */
 export function pagefindToResult(data: PagefindResultData): SearchResult {
   return {
     title: data.meta?.title || 'Document',

@@ -5,6 +5,7 @@ import {
   type DocCollectionEntry,
   type NavItem,
 } from './types.ts';
+import { withBase } from './utils/base.ts';
 
 export const DEFAULT_CATEGORY_ORDER: readonly string[] = [
   'Getting Started',
@@ -13,7 +14,7 @@ export const DEFAULT_CATEGORY_ORDER: readonly string[] = [
   'API Reference',
 ];
 
-function toNavItem({ id, data }: DocCollectionEntry): NavItem {
+function toNavItem({ id, data }: DocCollectionEntry, base: string | undefined): NavItem {
   return {
     id,
     title: data.title,
@@ -23,7 +24,7 @@ function toNavItem({ id, data }: DocCollectionEntry): NavItem {
     badge: data.badge,
     badgeVariant: data.badgeVariant,
     httpMethod: data.httpMethod,
-    href: id === 'index' ? '/' : `/${id}`,
+    href: withBase(id === 'index' ? '/' : `/${id}`, base),
   };
 }
 
@@ -49,12 +50,14 @@ function categoryRank(category: string, categoryOrder: readonly string[]): numbe
 /**
  * Organizes a collection of AsciiDoc entries into sorted sidebar groups and flat pagination items.
  * Groups follow `categoryOrder`, then alphabetical; items sort by `order`, then title.
+ * Hrefs include the Astro `base` path (`import.meta.env.BASE_URL` unless `base` is given).
  */
 export function buildDocsNavigation(
   entries: DocCollectionEntry[],
   categoryOrder: readonly string[] = DEFAULT_CATEGORY_ORDER,
+  base?: string,
 ): BuiltNavigation {
-  const groups = groupByCategory(entries.map(toNavItem));
+  const groups = groupByCategory(entries.map((entry) => toNavItem(entry, base)));
 
   const navGroups = [...groups.entries()]
     .toSorted(

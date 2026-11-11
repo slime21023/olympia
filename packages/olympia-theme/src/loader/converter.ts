@@ -15,6 +15,7 @@ import {
   renderAdmonition,
   renderChecklist,
   renderInlineMath,
+  prefixRootLink,
   renderKbd,
   renderListing,
   renderMenu,
@@ -36,13 +37,16 @@ export interface CompileOptions {
   fallbackTitle?: string;
   /** Directory that `include::` targets resolve against; includes cannot escape it. */
   baseDir?: string;
+  /**
+   * The site's Astro `base` path (default `/`). Relative image targets resolve against it (images
+   * live in the site's `public/` folder; a document can override this with `:imagesdir:`), and
+   * root-relative links such as `link:/guide/start[Guide]` get it as a prefix.
+   */
+  basePath?: string;
 }
 
 const ASCIIDOC_ATTRIBUTES = {
   experimental: '',
-  // Relative image targets resolve to the site root, so images live in the site's `public/` folder.
-  // A document can still override this with `:imagesdir:`.
-  imagesdir: '/@',
   sectanchors: '',
   'source-highlighter': 'none',
 };
@@ -81,6 +85,12 @@ class OlympiaHtml5Converter {
       case 'open':
       case 'example':
         return renderTabs(node as Block) ?? this.base.convert(node, transform, opts);
+      case 'inline_anchor': {
+        const html = this.base.convert(node, transform, opts);
+        return (node as Inline).getType() === 'link'
+          ? prefixRootLink(html, this.ctx.basePath)
+          : html;
+      }
       case 'inline_kbd':
         return renderKbd(node as Inline);
       case 'inline_menu':
@@ -112,16 +122,17 @@ export async function compileAsciiDoc(
   rawSource: string,
   options: CompileOptions = {},
 ): Promise<CompiledAsciiDoc> {
-  const { fallbackTitle = 'Untitled', baseDir } = options;
+  const { fallbackTitle = 'Untitled', baseDir, basePath = '/' } = options;
   const highlighter = await getOlympiaHighlighter();
   const { content, frontmatter } = extractFrontmatter(rawSource);
-  const ctx: RenderContext = { highlighter, headings: [] };
+  const ctx: RenderContext = { highlighter, headings: [], basePath };
 
   const doc = getAsciidoctor().load(content, {
     safe: 'safe',
     standalone: false,
     converter: new OlympiaHtml5Converter(ctx),
-    attributes: ASCIIDOC_ATTRIBUTES,
+    // The trailing `@` makes it a soft default that a document's own `:imagesdir:` replaces.
+    attributes: { ...ASCIIDOC_ATTRIBUTES, imagesdir: `${basePath.replace(/\/+$/, '')}/@` },
     ...(baseDir ? { base_dir: baseDir } : {}),
   });
 

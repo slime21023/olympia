@@ -59,6 +59,7 @@ export function asciidocLoader(options: AsciiDocLoaderOptions): Loader {
         const compiled = await compileAsciiDoc(raw, {
           fallbackTitle: basename(absolutePath, extname(absolutePath)),
           baseDir: dirname(absolutePath),
+          basePath: config.base,
         });
 
         const data = await parseData({

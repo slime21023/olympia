@@ -1,4 +1,5 @@
 import type { SearchDocItem } from '../../types.ts';
+import { withBase } from '../../utils/base.ts';
 import { defineElement } from '../../utils/define-element.ts';
 import {
   docToResult,
@@ -9,7 +10,7 @@ import {
   type SearchResult,
 } from './search-results.ts';
 
-const PAGEFIND_PATH = '/pagefind/pagefind.js';
+const PAGEFIND_PATH = withBase('/pagefind/pagefind.js');
 const MAX_FULLTEXT_RESULTS = 8;
 
 interface PagefindModule {

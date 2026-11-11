@@ -287,6 +287,9 @@ See `apps/docs/src/content/docs/authoring/asciidoc-syntax.adoc` for full example
   `packages/olympia-theme/src/styles/tokens.css` (`--o-primary`, `--o-surface`, `--sidebar-width`, and
   so on). Override them in your own stylesheet, or edit the file in your copy of the theme.
 - **Extra right-rail content**: `DocsLayout` has a named slot, `<Fragment slot="rail">…</Fragment>`.
+- **Hosting under a sub-path**: set Astro's `base` (for example `base: '/docs'`). Sidebar and pagination
+  links, the header logo link, search, relative images and root-relative links such as
+  `link:/guide/start[Guide]` all get the base path. Write authored links without it.
 - **Components**: the pieces are grouped by feature in `packages/olympia-theme/src/components/`
   (`layout`, `navigation`, `content`, `search`). You own your copy of the theme, so edit them directly.
 

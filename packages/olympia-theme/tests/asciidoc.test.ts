@@ -172,6 +172,29 @@ pnpm install
     expect(result.html).toContain('src="/foo.png"');
   });
 
+  test('basePath puts the site base path in front of relative images', async () => {
+    const result = await compileAsciiDoc('= T\n\nimage::foo.png[Foo]\n', { basePath: '/docs' });
+    expect(result.html).toContain('src="/docs/foo.png"');
+    const slash = await compileAsciiDoc('= T\n\nimage::foo.png[Foo]\n', { basePath: '/docs/' });
+    expect(slash.html).toContain('src="/docs/foo.png"');
+  });
+
+  test('basePath prefixes root-relative links only', async () => {
+    const result = await compileAsciiDoc(
+      '= T\n\nlink:/guide/start[Guide] link:https://example.com[Ext] link:other.html[Rel] link:#top[Top]\n',
+      { basePath: '/docs' },
+    );
+    expect(result.html).toContain('href="/docs/guide/start"');
+    expect(result.html).toContain('href="https://example.com"');
+    expect(result.html).toContain('href="other.html"');
+    expect(result.html).toContain('href="#top"');
+  });
+
+  test('root-relative links are unchanged for the root base path', async () => {
+    const result = await compileAsciiDoc('= T\n\nlink:/guide/start[Guide]\n');
+    expect(result.html).toContain('href="/guide/start"');
+  });
+
   test('a document can override imagesdir', async () => {
     const result = await compileAsciiDoc('= T\n:imagesdir: assets\n\nimage::foo.png[Foo]\n');
     expect(result.html).toContain('src="assets/foo.png"');

@@ -9,6 +9,7 @@ import {
   MENU_CARET_ICON,
 } from '../icons.ts';
 import type { HeadingItem } from '../types.ts';
+import { withBase } from '../utils/base.ts';
 import { escapeHtml, htmlToPlainText, unescapeHtml } from '../utils/html.ts';
 import { extractCallouts, unescapeCalloutMarkers } from './callouts.ts';
 import { highlightCode, resolveLanguage } from './highlighter.ts';
@@ -18,6 +19,8 @@ export interface RenderContext {
   highlighter: Highlighter;
   /** Filled as sections are rendered; read after `doc.convert()` completes. */
   headings: HeadingItem[];
+  /** The site's Astro `base` path, prefixed to root-relative links. */
+  basePath: string;
 }
 
 const TOC_MIN_DEPTH = 2;
@@ -199,4 +202,15 @@ export function renderMermaid(node: Block): string {
   const title = node.getTitle();
   const titleHtml = title ? `<div class="title">${title}</div>` : '';
   return `<o-mermaid class="o-mermaid">${titleHtml}<pre class="o-mermaid__source">${escapeHtml(node.getSource())}</pre></o-mermaid>`;
+}
+
+/**
+ * Adds the site base path to a root-relative link (`link:/guide/start[Guide]`), so authored links
+ * keep working when the site is served from a sub-path. Other links are returned unchanged.
+ */
+export function prefixRootLink(anchorHtml: string, basePath: string): string {
+  return anchorHtml.replace(
+    /^(<a [^>]*?href=")(\/(?!\/)[^"]*)"/,
+    (_match, head: string, path: string) => `${head}${withBase(path, basePath)}"`,
+  );
 }
