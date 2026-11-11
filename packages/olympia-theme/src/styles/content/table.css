@@ -1,0 +1,42 @@
+/* Tables (High-density schema references) */
+.o-prose table.tableblock {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2rem 0;
+  font-size: 14.5px;
+  line-height: 24px;
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-DEFAULT);
+  overflow: hidden;
+}
+
+.o-prose table.tableblock th,
+.o-prose table.tableblock td {
+  padding: 0.875rem 1.125rem;
+  text-align: left;
+  border-bottom: 1px solid var(--o-border);
+  vertical-align: top;
+}
+
+.o-prose table.tableblock th {
+  background-color: var(--o-surface-raised);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--o-text-muted);
+}
+
+.o-prose table.tableblock tr:last-child td {
+  border-bottom: none;
+}
+
+.o-prose table.tableblock tbody tr:hover td {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+.o-prose table.tableblock p.tableblock {
+  margin: 0;
+}

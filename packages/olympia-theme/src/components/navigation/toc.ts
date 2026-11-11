@@ -1,4 +1,4 @@
-import { defineElement } from './define.ts';
+import { defineElement } from '../../utils/define-element.ts';
 
 /** <o-toc>: highlights the TOC link of the heading currently in view. */
 class OlympiaToc extends HTMLElement {

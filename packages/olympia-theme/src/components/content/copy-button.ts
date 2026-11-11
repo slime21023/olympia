@@ -1,4 +1,4 @@
-import { defineElement } from './define.ts';
+import { defineElement } from '../../utils/define-element.ts';
 
 const COPIED_RESET_MS = 1800;
 

@@ -1,0 +1,43 @@
+---
+// The #drawer-open / #o-mobile-drawer ids are wired up by `mobile-drawer.ts`.
+---
+
+<button
+  type="button"
+  id="drawer-open"
+  class="o-header__drawer-btn"
+  aria-label="Open navigation menu"
+  aria-expanded="false"
+  aria-controls="o-mobile-drawer"
+>
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+    <path stroke-linecap="round" d="M3 5.5h14M3 10h14M3 14.5h10" />
+  </svg>
+</button>
+
+<style>
+  .o-header__drawer-btn {
+    display: none;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--o-border);
+    border-radius: var(--radius-DEFAULT);
+    color: var(--o-text-secondary);
+    cursor: pointer;
+  }
+
+  .o-header__drawer-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 767px) {
+    .o-header__drawer-btn {
+      display: inline-flex;
+    }
+  }
+</style>

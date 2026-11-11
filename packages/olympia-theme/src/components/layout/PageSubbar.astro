@@ -1,0 +1,57 @@
+---
+import MobileToc from '../navigation/MobileToc.astro';
+import type { HeadingItem } from '../../types.ts';
+
+export interface Props {
+  category: string;
+  title: string;
+  headings: HeadingItem[];
+}
+
+const { category, title, headings = [] } = Astro.props;
+---
+
+<div class="o-subbar">
+  <div class="o-breadcrumb">
+    <span class="o-breadcrumb__cat">{category}</span>
+    <span class="o-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="o-breadcrumb__current">{title}</span>
+  </div>
+
+  <MobileToc headings={headings} />
+</div>
+
+<style>
+  /* Subbar for Tablet & Mobile */
+  .o-subbar {
+    display: none;
+    width: 100%;
+    max-width: var(--prose-max-width);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--o-border);
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .o-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--o-text-muted);
+  }
+
+  .o-breadcrumb__current {
+    color: var(--o-text);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1279px) {
+    .o-subbar {
+      display: flex;
+    }
+  }
+</style>

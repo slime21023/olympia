@@ -1,0 +1,100 @@
+---
+import SidebarLink from './SidebarLink.astro';
+import type { NavGroup } from '../../types.ts';
+
+export interface Props {
+  groups: NavGroup[];
+  currentPath: string;
+}
+
+const { groups = [], currentPath = '/' } = Astro.props;
+
+function isActive(itemHref: string, current: string): boolean {
+  const normA = itemHref.replace(/\/+$/, '') || '/';
+  const normB = current.replace(/\/+$/, '') || '/';
+  return normA === normB;
+}
+---
+
+<nav class="o-sidebar-nav" aria-label="Documentation navigation">
+  {groups.map((group) => (
+    <details class="o-nav-group" open>
+      <summary class="o-nav-group__title">
+        <span>{group.category}</span>
+        <svg class="o-nav-group__chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m5 6.5 3 3 3-3" />
+        </svg>
+      </summary>
+      <ul class="o-nav-group__list">
+        {group.items.map((item) => (
+          <li class="o-nav-item">
+            <SidebarLink item={item} active={isActive(item.href, currentPath)} />
+          </li>
+        ))}
+      </ul>
+    </details>
+  ))}
+</nav>
+
+<style>
+  .o-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.875rem 0.625rem 2rem;
+  }
+
+  .o-nav-group {
+    margin: 0;
+  }
+
+  .o-nav-group__title {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--o-text-muted);
+    cursor: pointer;
+    user-select: none;
+    border-radius: var(--radius-sm);
+  }
+
+  .o-nav-group__title::-webkit-details-marker {
+    display: none;
+  }
+
+  .o-nav-group__title:hover {
+    color: var(--o-text);
+  }
+
+  .o-nav-group__chevron {
+    width: 14px;
+    height: 14px;
+    transition: transform 150ms ease;
+  }
+
+  .o-nav-group:not([open]) .o-nav-group__chevron {
+    transform: rotate(-90deg);
+  }
+
+  .o-nav-group__list {
+    list-style: none;
+    margin: 0 0 0 0.5rem;
+    padding: 0 0 0 0.625rem;
+    border-left: 2px solid var(--o-border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .o-nav-item {
+    margin: 0;
+  }
+</style>

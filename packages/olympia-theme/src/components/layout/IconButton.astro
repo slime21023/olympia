@@ -1,0 +1,49 @@
+---
+export interface Props {
+  label: string;
+  title?: string;
+  /** When set, renders an external link instead of a button. */
+  href?: string;
+}
+
+const { label, title, href } = Astro.props;
+---
+
+{href ? (
+  <a href={href} target="_blank" rel="noopener noreferrer" class="o-icon-btn" aria-label={label} title={title}>
+    <slot />
+  </a>
+) : (
+  <button type="button" class="o-icon-btn" aria-label={label} title={title}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .o-icon-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--o-border);
+    border-radius: var(--radius-DEFAULT);
+    color: var(--o-text-muted);
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+
+  .o-icon-btn:hover {
+    background-color: var(--o-surface-overlay);
+    color: var(--o-text);
+  }
+
+
+  /* Icons are slotted from the parent component, so they do not carry this component's scope attribute. */
+  .o-icon-btn :global(svg) {
+    width: 17px;
+    height: 17px;
+  }
+</style>

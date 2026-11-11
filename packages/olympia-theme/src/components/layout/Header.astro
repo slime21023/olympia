@@ -1,0 +1,136 @@
+---
+import IconButton from './IconButton.astro';
+import MobileDrawerToggle from './MobileDrawerToggle.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import SearchTrigger from '../search/SearchTrigger.astro';
+
+export interface Props {
+  siteTitle?: string;
+  version?: string;
+  githubUrl?: string;
+}
+
+const {
+  siteTitle = 'Olympia',
+  version = 'v0.1.0',
+  githubUrl = 'https://github.com',
+} = Astro.props;
+---
+
+<header class="o-header">
+  <div class="o-header__inner">
+    <div class="o-header__left">
+      <MobileDrawerToggle />
+
+      <a href="/" class="o-header__brand">
+        <span class="o-header__logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.75" />
+            <path d="M7 15.5L12 7.5L17 15.5H7Z" stroke="#6366f1" stroke-width="1.75" stroke-linejoin="round" />
+            <circle cx="12" cy="13" r="1.5" fill="#10b981" />
+          </svg>
+        </span>
+        <span class="o-header__title">{siteTitle}</span>
+      </a>
+
+      <span class="o-header__version">{version}</span>
+    </div>
+
+    <div class="o-header__center">
+      <SearchTrigger />
+    </div>
+
+    <div class="o-header__right">
+      <ThemeToggle />
+
+      {githubUrl && (
+        <IconButton href={githubUrl} label="View source on GitHub" title="GitHub Repository">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M10 1.8a8.2 8.2 0 0 0-2.6 15.98c.41.07.56-.18.56-.4v-1.4c-2.28.5-2.76-1.1-2.76-1.1-.37-.95-.91-1.2-.91-1.2-.75-.5.06-.49.06-.49.82.06 1.26.85 1.26.85.73 1.25 1.92.89 2.39.68.07-.53.29-.89.52-1.1-1.82-.2-3.74-.91-3.74-4.06 0-.9.32-1.63.85-2.21-.09-.2-.37-1.04.08-2.17 0 0 .69-.22 2.26.84a7.8 7.8 0 0 1 4.12 0c1.57-1.06 2.26-.84 2.26-.84.45 1.13.17 1.97.08 2.17.53.58.85 1.31.85 2.21 0 3.16-1.92 3.85-3.75 4.05.3.26.56.76.56 1.54v2.28c0 .22.15.48.57.4A8.2 8.2 0 0 0 10 1.8Z"
+            />
+          </svg>
+        </IconButton>
+      )}
+    </div>
+  </div>
+</header>
+
+<style>
+  .o-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: var(--header-height);
+    background-color: var(--o-header-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--o-border);
+  }
+
+  .o-header__inner {
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .o-header__left {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .o-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--o-text);
+  }
+
+  .o-header__logo {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    color: var(--o-text);
+  }
+
+  .o-header__version {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 0.125rem 0.45rem;
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in srgb, var(--o-primary) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--o-primary) 30%, transparent);
+    color: var(--o-primary-text);
+  }
+
+  .o-header__center {
+    flex: 1;
+    max-width: 420px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .o-header__right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 639px) {
+    .o-header__center {
+      max-width: fit-content;
+      margin-left: auto;
+    }
+  }
+</style>

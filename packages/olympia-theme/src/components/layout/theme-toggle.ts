@@ -1,4 +1,4 @@
-import { defineElement } from './define.ts';
+import { defineElement } from '../../utils/define-element.ts';
 
 // Must match the `is:inline` color-scheme bootstrap in `layouts/DocsLayout.astro`.
 const STORAGE_KEY = 'color-scheme';

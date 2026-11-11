@@ -1,4 +1,4 @@
-import { defineElement } from './define.ts';
+import { defineElement } from '../../utils/define-element.ts';
 
 /** <o-tabs>: click and ArrowLeft/ArrowRight (wrapping) tab switcher with roving tabindex. */
 class OlympiaTabs extends HTMLElement {

@@ -1,0 +1,35 @@
+/* HTTP Verb Tags */
+.o-code-verb {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.o-code-verb--get {
+  background-color: color-mix(in srgb, var(--o-primary) 15%, transparent);
+  color: var(--o-primary-text);
+  border: 1px solid color-mix(in srgb, var(--o-primary) 35%, transparent);
+}
+
+.o-code-verb--post {
+  background-color: color-mix(in srgb, var(--o-secondary) 15%, transparent);
+  color: var(--o-secondary);
+  border: 1px solid color-mix(in srgb, var(--o-secondary) 35%, transparent);
+}
+
+.o-code-verb--put,
+.o-code-verb--patch {
+  background-color: color-mix(in srgb, var(--o-tertiary) 15%, transparent);
+  color: var(--o-tertiary);
+  border: 1px solid color-mix(in srgb, var(--o-tertiary) 35%, transparent);
+}
+
+.o-code-verb--delete {
+  background-color: color-mix(in srgb, var(--o-coral) 15%, transparent);
+  color: var(--o-error);
+  border: 1px solid color-mix(in srgb, var(--o-coral) 35%, transparent);
+}

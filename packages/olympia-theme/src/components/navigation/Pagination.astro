@@ -1,0 +1,79 @@
+---
+import type { NavItem } from '../../types.ts';
+
+export interface Props {
+  prevPage: NavItem | null;
+  nextPage: NavItem | null;
+}
+
+const { prevPage = null, nextPage = null } = Astro.props;
+---
+
+{(prevPage || nextPage) && (
+  <nav class="o-pagination" aria-label="Document pagination" data-pagefind-ignore>
+    {prevPage ? (
+      <a href={prevPage.href} class="o-pagination__card o-pagination__card--prev">
+        <span class="o-pagination__dir">← Previous</span>
+        <span class="o-pagination__title">{prevPage.title}</span>
+      </a>
+    ) : (
+      <div />
+    )}
+    {nextPage && (
+      <a href={nextPage.href} class="o-pagination__card o-pagination__card--next">
+        <span class="o-pagination__dir">Next →</span>
+        <span class="o-pagination__title">{nextPage.title}</span>
+      </a>
+    )}
+  </nav>
+)}
+
+<style>
+  /* Pagination Cards */
+  .o-pagination {
+    margin-top: 3.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--o-border);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .o-pagination__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--o-border);
+    border-radius: var(--radius-DEFAULT);
+    background-color: var(--o-surface);
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+
+  .o-pagination__card:hover {
+    border-color: var(--o-primary);
+    background-color: var(--o-surface-raised);
+  }
+
+  .o-pagination__card--next {
+    text-align: right;
+  }
+
+  .o-pagination__dir {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--o-text-muted);
+  }
+
+  .o-pagination__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--o-text);
+  }
+
+  @media (max-width: 767px) {
+    .o-pagination {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

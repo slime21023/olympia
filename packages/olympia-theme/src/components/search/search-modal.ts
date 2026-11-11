@@ -1,5 +1,5 @@
-import type { SearchDocItem } from '../types.ts';
-import { defineElement } from './define.ts';
+import type { SearchDocItem } from '../../types.ts';
+import { defineElement } from '../../utils/define-element.ts';
 import {
   docToResult,
   filterDocs,

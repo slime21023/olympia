@@ -1,0 +1,127 @@
+---
+import type { BadgeVariant } from '../../types.ts';
+
+export interface Props {
+  title: string;
+  description: string;
+  category: string;
+  badge?: string;
+  badgeVariant: BadgeVariant;
+  httpMethod?: string;
+  endpoint?: string;
+}
+
+const { title, description, category, badge, badgeVariant, httpMethod, endpoint } = Astro.props;
+---
+
+<header class="o-doc-header">
+  <div class="o-doc-header__eyebrow">
+    <span class="o-doc-header__category">{category}</span>
+    {badge && (
+      <span class={`o-doc-badge o-doc-badge--${badgeVariant}`}>{badge}</span>
+    )}
+    {httpMethod && endpoint && (
+      <span class="o-doc-endpoint-pill">
+        <span class={`o-code-verb o-code-verb--${httpMethod.toLowerCase()}`}>
+          {httpMethod.toUpperCase()}
+        </span>
+        <code class="o-doc-endpoint-path">{endpoint}</code>
+      </span>
+    )}
+  </div>
+  <h1 class="o-doc-title">{title}</h1>
+  {description && <p class="o-doc-lead">{description}</p>}
+</header>
+
+<style>
+  /* Document Header */
+  .o-doc-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--o-border);
+  }
+
+  .o-doc-header__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .o-doc-header__category {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--o-primary-text);
+  }
+
+  .o-doc-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.45rem;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+  }
+
+  .o-doc-badge--primary {
+    background-color: color-mix(in srgb, var(--o-primary) 15%, transparent);
+    color: var(--o-primary-text);
+    border: 1px solid color-mix(in srgb, var(--o-primary) 35%, transparent);
+  }
+
+  .o-doc-badge--secondary {
+    background-color: color-mix(in srgb, var(--o-secondary) 15%, transparent);
+    color: var(--o-secondary);
+    border: 1px solid color-mix(in srgb, var(--o-secondary) 35%, transparent);
+  }
+
+  .o-doc-badge--tertiary {
+    background-color: color-mix(in srgb, var(--o-tertiary) 15%, transparent);
+    color: var(--o-tertiary);
+    border: 1px solid color-mix(in srgb, var(--o-tertiary) 35%, transparent);
+  }
+
+  .o-doc-endpoint-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.15rem 0.5rem 0.15rem 0.25rem;
+    background-color: var(--o-surface-raised);
+    border: 1px solid var(--o-border);
+    border-radius: var(--radius-DEFAULT);
+  }
+
+  .o-doc-endpoint-path {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--o-text);
+  }
+
+  .o-doc-title {
+    margin: 0 0 1rem;
+    font-size: 36px;
+    line-height: 44px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--o-text);
+  }
+
+  .o-doc-lead {
+    margin: 0;
+    font-size: 16.5px;
+    line-height: 28px;
+    color: var(--o-text-muted);
+  }
+
+  @media (max-width: 767px) {
+    .o-doc-title {
+      font-size: 28px;
+      line-height: 36px;
+      letter-spacing: -0.02em;
+    }
+  }
+</style>

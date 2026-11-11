@@ -1,5 +1,5 @@
-import { DEFAULT_CATEGORY, type SearchDocItem } from '../types.ts';
-import { escapeHtml } from '../utils/html.ts';
+import { DEFAULT_CATEGORY, type SearchDocItem } from '../../types.ts';
+import { escapeHtml } from '../../utils/html.ts';
 
 export interface PagefindResultData {
   url: string;

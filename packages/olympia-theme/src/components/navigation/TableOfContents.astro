@@ -1,5 +1,5 @@
 ---
-import type { HeadingItem } from '../types.ts';
+import type { HeadingItem } from '../../types.ts';
 
 export interface Props {
   headings: HeadingItem[];
@@ -107,5 +107,5 @@ const { headings = [] } = Astro.props;
 </style>
 
 <script>
-  import '../elements/toc.ts';
+  import './toc.ts';
 </script>

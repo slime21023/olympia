@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { filterDocs, renderSearchResults } from '../src/elements/search-results.ts';
+import { filterDocs, renderSearchResults } from '../src/components/search/search-results.ts';
 import type { SearchDocItem } from '../src/types.ts';
 
 describe('renderSearchResults', () => {

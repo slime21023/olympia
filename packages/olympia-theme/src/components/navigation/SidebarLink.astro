@@ -1,0 +1,126 @@
+---
+import type { NavItem } from '../../types.ts';
+
+export interface Props {
+  item: NavItem;
+  active: boolean;
+}
+
+const { item, active } = Astro.props;
+---
+
+<a
+  href={item.href}
+  class:list={['o-nav-link', { 'o-nav-link--active': active }]}
+  aria-current={active ? 'page' : undefined}
+>
+  <span class="o-nav-link__text">
+    {item.httpMethod && (
+      <span class={`o-nav-verb o-nav-verb--${item.httpMethod.toLowerCase()}`}>
+        {item.httpMethod.toUpperCase()}
+      </span>
+    )}
+    <span>{item.title}</span>
+  </span>
+  {item.badge && (
+    <span class={`o-nav-badge o-nav-badge--${item.badgeVariant || 'primary'}`}>
+      {item.badge}
+    </span>
+  )}
+</a>
+
+<style>
+  .o-nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--o-text-secondary);
+    border-radius: var(--radius-DEFAULT);
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .o-nav-link:hover {
+    background-color: var(--o-surface-high);
+    color: var(--o-text);
+  }
+
+  .o-nav-link--active {
+    background-color: color-mix(in srgb, var(--o-primary) 14%, transparent);
+    color: var(--o-text);
+    font-weight: 500;
+  }
+
+  .o-nav-link--active::before {
+    content: '';
+    position: absolute;
+    left: -0.625rem;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    margin-left: -2px;
+    background-color: var(--o-primary);
+    border-radius: var(--radius-full);
+  }
+
+  .o-nav-link__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .o-nav-verb {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.05rem 0.3rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .o-nav-verb--get {
+    background-color: color-mix(in srgb, var(--o-primary) 15%, transparent);
+    color: var(--o-primary-text);
+  }
+
+  .o-nav-verb--post {
+    background-color: color-mix(in srgb, var(--o-secondary) 15%, transparent);
+    color: var(--o-secondary);
+  }
+
+  .o-nav-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.1rem 0.375rem;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .o-nav-badge--primary {
+    background-color: color-mix(in srgb, var(--o-primary) 16%, transparent);
+    color: var(--o-primary-text);
+    border: 1px solid color-mix(in srgb, var(--o-primary) 35%, transparent);
+  }
+
+  .o-nav-badge--secondary {
+    background-color: color-mix(in srgb, var(--o-secondary) 16%, transparent);
+    color: var(--o-secondary);
+    border: 1px solid color-mix(in srgb, var(--o-secondary) 35%, transparent);
+  }
+
+  .o-nav-badge--tertiary {
+    background-color: color-mix(in srgb, var(--o-tertiary) 16%, transparent);
+    color: var(--o-tertiary);
+    border: 1px solid color-mix(in srgb, var(--o-tertiary) 35%, transparent);
+  }
+</style>

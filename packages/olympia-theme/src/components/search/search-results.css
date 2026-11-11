@@ -1,0 +1,79 @@
+/* Styles for result markup built by `search-results.ts` and injected via innerHTML.
+   That markup carries no Astro scope attribute, so these rules must be global. */
+
+.o-cmd-group-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--o-text-muted);
+  padding: 0.5rem 0.625rem 0.25rem;
+}
+
+.o-cmd-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-DEFAULT);
+  color: var(--o-text-secondary);
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.o-cmd-item:hover,
+.o-cmd-item[aria-selected="true"] {
+  background-color: color-mix(in srgb, var(--o-primary) 14%, transparent);
+  color: var(--o-text);
+}
+
+.o-cmd-item__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+.o-cmd-item__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--o-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.o-cmd-item__excerpt {
+  font-size: 12px;
+  color: var(--o-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.o-cmd-item__excerpt mark {
+  background-color: color-mix(in srgb, var(--o-primary) 25%, transparent);
+  color: var(--o-primary-text);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.o-cmd-item__path {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--o-text-muted);
+  background-color: var(--o-surface-raised);
+  border: 1px solid var(--o-border);
+  border-radius: var(--radius-sm);
+  padding: 0.125rem 0.45rem;
+  flex-shrink: 0;
+}
+
+.o-cmd-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 14px;
+  color: var(--o-text-muted);
+}
