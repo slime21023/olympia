@@ -40,6 +40,8 @@ Press kbd:[Cmd+K] (or kbd:[Ctrl+K] on Windows and Linux) anywhere on the page to
 
 == Quick Start
 
+These steps run the example site in this repository. To build your own site with the theme, see link:/getting-started/create-a-site[Create Your Own Site].
+
 === 1. Common Commands
 
 Run the following commands from the repository root using **Bun**:
